@@ -2,7 +2,7 @@ import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 import { useEffect } from "react";
 
 // Layout & UI
@@ -32,7 +32,7 @@ function Router() {
   const [location] = useLocation();
   
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence initial={false} mode="wait">
       <Switch location={location} key={location}>
         <Route path="/" component={Home} />
         <Route path="/menu" component={Menu} />
@@ -49,17 +49,19 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="flex flex-col min-h-screen">
-        <ScrollToTop />
-        <Navbar />
-        <main className="flex-1">
-          <Router />
-        </main>
-        <Footer />
-      </div>
-      <Toaster />
-    </QueryClientProvider>
+    <MotionConfig reducedMotion="user">
+      <QueryClientProvider client={queryClient}>
+        <div className="flex flex-col min-h-screen">
+          <ScrollToTop />
+          <Navbar />
+          <main className="flex-1">
+            <Router />
+          </main>
+          <Footer />
+        </div>
+        <Toaster />
+      </QueryClientProvider>
+    </MotionConfig>
   );
 }
 

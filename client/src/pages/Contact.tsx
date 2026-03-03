@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { PageTransition, fadeUpVariant } from "@/components/ui/PageTransition";
+import {
+  PageTransition,
+  fadeLeftVariant,
+  heroCopyVariant,
+  overlayCardVariant,
+  tightStaggerContainer,
+} from "@/components/ui/PageTransition";
 import { motion } from "framer-motion";
 import { useCreateContact } from "@/hooks/use-contact";
 import { useToast } from "@/hooks/use-toast";
@@ -45,29 +51,29 @@ export default function Contact() {
         <motion.div 
           initial="hidden"
           animate="visible"
-          variants={fadeUpVariant}
+          variants={heroCopyVariant}
         >
           <h1 className="text-5xl md:text-7xl font-display mb-6">Get in Touch</h1>
           <p className="text-muted-foreground text-lg mb-12 max-w-md font-light">
             Inquiries regarding private events, wholesale partnerships, or general questions are welcome.
           </p>
           
-          <div className="space-y-6 text-foreground">
-            <div>
+          <motion.div variants={tightStaggerContainer} initial="hidden" animate="visible" className="space-y-6 text-foreground">
+            <motion.div variants={overlayCardVariant}>
               <h4 className="text-sm tracking-widest uppercase text-accent mb-2">General</h4>
               <p>hello@gazellecoffee.com</p>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div variants={overlayCardVariant}>
               <h4 className="text-sm tracking-widest uppercase text-accent mb-2">Press & Partnerships</h4>
               <p>press@gazellecoffee.com</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </motion.div>
 
         <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          initial="hidden"
+          animate="visible"
+          variants={fadeLeftVariant}
           className="bg-card p-8 md:p-12 rounded-3xl border border-border/50 shadow-sm"
         >
           <form onSubmit={handleSubmit} className="space-y-6">

@@ -1,6 +1,17 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { PageTransition, fadeUpVariant, staggerContainer } from "@/components/ui/PageTransition";
+import {
+  PageTransition,
+  createRevealVariant,
+  fadeUpVariant,
+  heroCopyVariant,
+  heroImageVariant,
+  heroVisualVariant,
+  revealViewport,
+  staggerContainer,
+  tightRevealViewport,
+  tightStaggerContainer,
+} from "@/components/ui/PageTransition";
 import { ArrowRight } from "lucide-react";
 import heroImg from "@assets/Screenshot_2026-03-02_at_12.00.23_PM_1772562150247.png";
 import signature1 from "@assets/Screenshot_2026-03-02_at_12.07.46_PM_1772562150247.png";
@@ -75,9 +86,9 @@ export default function Home() {
         <div className="mx-auto max-w-[92rem]">
           <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroCopyVariant}
               className="relative overflow-hidden rounded-[3rem] border border-border/70 bg-card/82 p-8 shadow-[0_28px_80px_rgba(36,35,39,0.12)] sm:p-10 lg:min-h-[40rem] lg:p-12"
             >
               <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-white/45 to-transparent" />
@@ -121,7 +132,7 @@ export default function Home() {
                 <motion.div
                   initial="hidden"
                   animate="visible"
-                  variants={staggerContainer}
+                  variants={tightStaggerContainer}
                   className="relative mt-12 overflow-hidden rounded-[1.9rem] border border-white/55 bg-white/45 backdrop-blur-sm"
                 >
                   <div className="grid divide-y divide-border/50 md:grid-cols-3 md:divide-x md:divide-y-0">
@@ -145,15 +156,15 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroVisualVariant}
               className="relative min-h-[640px] overflow-hidden rounded-[3rem] border border-[#9F7965]/40 bg-[#242327] p-4 shadow-[0_32px_90px_rgba(36,35,39,0.24)] sm:p-5"
             >
               <motion.img
-                initial={{ scale: 1.07 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.25, ease: [0.22, 1, 0.36, 1] }}
+                initial="hidden"
+                animate="visible"
+                variants={heroImageVariant}
                 src={heroImg}
                 alt="Gazelle flagship interior preview"
                 className="absolute inset-0 h-full w-full object-cover"
@@ -166,9 +177,9 @@ export default function Home() {
               </div>
 
               <motion.div
-                initial={{ opacity: 0, x: 18, y: -8 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.65, delay: 0.28 }}
+                initial="hidden"
+                animate="visible"
+                variants={createRevealVariant({ axis: "x", distance: 18, delay: 0.28, duration: 0.62, scale: 0.98 })}
                 className="absolute right-5 top-5 hidden w-[14.5rem] rounded-[2rem] border border-white/10 bg-[#242327]/34 p-4 backdrop-blur-md xl:block"
               >
                 <div className="overflow-hidden rounded-[1.4rem]">
@@ -188,9 +199,9 @@ export default function Home() {
 
               <div className="absolute inset-x-5 bottom-5 grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.35 }}
+                  initial="hidden"
+                  animate="visible"
+                  variants={createRevealVariant({ distance: 14, delay: 0.35, duration: 0.58, scale: 0.985 })}
                   className="rounded-[2.15rem] border border-white/10 bg-[#242327]/30 p-6 backdrop-blur-md"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
@@ -202,9 +213,9 @@ export default function Home() {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.45 }}
+                  initial="hidden"
+                  animate="visible"
+                  variants={createRevealVariant({ distance: 14, delay: 0.45, duration: 0.58, scale: 0.985 })}
                   className="rounded-[2.15rem] border border-white/10 bg-[#C0987E] p-6 text-[#242327]"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-[#242327]/65">
@@ -233,7 +244,7 @@ export default function Home() {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
+              viewport={revealViewport}
               variants={fadeUpVariant}
               className="flex flex-col justify-between rounded-[2.75rem] border border-border/70 bg-background/90 p-7 shadow-[0_22px_60px_rgba(36,35,39,0.07)] sm:p-8 lg:p-10"
             >
@@ -253,7 +264,7 @@ export default function Home() {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={tightRevealViewport}
                 className="mt-10 space-y-4"
               >
                 {menuDirection.map((item) => (
@@ -288,7 +299,7 @@ export default function Home() {
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={tightRevealViewport}
               className="grid gap-5 lg:grid-cols-[1.04fr_0.96fr]"
             >
               <motion.article
@@ -405,7 +416,7 @@ export default function Home() {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={tightRevealViewport}
               variants={fadeUpVariant}
               className="flex flex-col justify-between rounded-[2.2rem] bg-background p-7 sm:p-8 lg:p-10"
             >
@@ -451,7 +462,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={revealViewport}
             variants={fadeUpVariant}
           >
             <h2 className="mb-8 text-5xl font-display md:text-6xl">Flagship Update</h2>

@@ -2,7 +2,20 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
-import { PageTransition, fadeUpVariant, staggerContainer } from "@/components/ui/PageTransition";
+import {
+  PageTransition,
+  createRevealVariant,
+  fadeUpVariant,
+  heroCopyVariant,
+  heroVisualVariant,
+  modalBackdropVariant,
+  modalPanelVariant,
+  overlayCardVariant,
+  revealViewport,
+  staggerContainer,
+  tightRevealViewport,
+  tightStaggerContainer,
+} from "@/components/ui/PageTransition";
 
 import img1 from "@assets/Screenshot_2026-03-02_at_12.00.23_PM_1772562150247.png";
 import img2 from "@assets/Screenshot_2026-03-02_at_12.04.42_PM_1772562150247.png";
@@ -119,9 +132,9 @@ export default function Gallery() {
         <section className="mx-auto max-w-[92rem]">
           <div className="grid gap-6 lg:grid-cols-[0.84fr_1.16fr]">
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroCopyVariant}
               className="relative overflow-hidden rounded-[3rem] border border-border/70 bg-card/82 p-8 shadow-[0_28px_80px_rgba(36,35,39,0.12)] sm:p-10 lg:min-h-[39rem] lg:p-12"
             >
               <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-white/45 to-transparent" />
@@ -157,7 +170,7 @@ export default function Gallery() {
                 </div>
 
                 <motion.div
-                  variants={staggerContainer}
+                  variants={tightStaggerContainer}
                   initial="hidden"
                   animate="visible"
                   className="mt-12 grid gap-3 md:grid-cols-3"
@@ -181,9 +194,9 @@ export default function Gallery() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroVisualVariant}
               className="relative min-h-[39rem] overflow-hidden rounded-[3rem] border border-[#9F7965]/40 bg-[#242327] p-4 shadow-[0_30px_90px_rgba(36,35,39,0.24)] sm:p-5"
             >
               <img
@@ -199,9 +212,9 @@ export default function Gallery() {
               </div>
 
               <motion.div
-                initial={{ opacity: 0, x: 18, y: -8 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.65, delay: 0.28 }}
+                initial="hidden"
+                animate="visible"
+                variants={createRevealVariant({ axis: "x", distance: 18, delay: 0.28, duration: 0.62, scale: 0.98 })}
                 className="absolute right-5 top-5 hidden w-[12.5rem] rounded-[2rem] border border-white/10 bg-[#242327]/34 p-3 backdrop-blur-md xl:block"
               >
                 <div className="overflow-hidden rounded-[1.4rem]">
@@ -218,9 +231,9 @@ export default function Gallery() {
 
               <div className="absolute inset-x-5 bottom-5 grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.35 }}
+                  initial="hidden"
+                  animate="visible"
+                  variants={createRevealVariant({ distance: 14, delay: 0.35, duration: 0.58, scale: 0.985 })}
                   className="rounded-[2.15rem] border border-white/10 bg-[#242327]/30 p-6 backdrop-blur-md"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
@@ -233,9 +246,9 @@ export default function Gallery() {
 
                 <motion.button
                   type="button"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.45 }}
+                  initial="hidden"
+                  animate="visible"
+                  variants={createRevealVariant({ distance: 14, delay: 0.45, duration: 0.58, scale: 0.985 })}
                   onClick={() => setSelectedImage(galleryImages[0])}
                   className="rounded-[2.15rem] border border-white/10 bg-[#C0987E] p-6 text-left text-[#242327] transition-colors hover:bg-[#9F7965] hover:text-[#f4ece6]"
                 >
@@ -252,7 +265,7 @@ export default function Gallery() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={revealViewport}
             variants={fadeUpVariant}
             className="mb-8"
           >
@@ -265,7 +278,7 @@ export default function Gallery() {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
+            viewport={tightRevealViewport}
             className="grid auto-rows-[16rem] gap-5 md:auto-rows-[18rem] md:grid-cols-2 xl:auto-rows-[14rem] xl:grid-cols-4"
           >
             {galleryImages.map((image) => (
@@ -294,12 +307,13 @@ export default function Gallery() {
         </section>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {selectedImage && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={modalBackdropVariant}
             className="fixed inset-0 z-[100] bg-[#242327]/88 p-4 backdrop-blur-md md:p-8"
             onClick={() => setSelectedImage(null)}
           >
@@ -314,10 +328,10 @@ export default function Gallery() {
 
             <div className="flex h-full items-center justify-center">
               <motion.div
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 18 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={modalPanelVariant}
                 className="relative w-full max-w-6xl"
                 onClick={(e) => e.stopPropagation()}
               >

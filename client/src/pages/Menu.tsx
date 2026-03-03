@@ -1,4 +1,10 @@
-import { PageTransition, fadeUpVariant, staggerContainer } from "@/components/ui/PageTransition";
+import {
+  PageTransition,
+  fadeUpVariant,
+  heroCopyVariant,
+  staggerContainer,
+  tightRevealViewport,
+} from "@/components/ui/PageTransition";
 import { motion } from "framer-motion";
 
 const menuData = [
@@ -56,9 +62,9 @@ export default function Menu() {
     <PageTransition className="min-h-screen bg-background px-4 pb-24 pt-32 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[92rem]">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          initial="hidden"
+          animate="visible"
+          variants={heroCopyVariant}
           className="mb-16 max-w-3xl md:mb-24"
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/28 bg-white/45 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
@@ -122,7 +128,7 @@ export default function Menu() {
                 id={slugifyCategory(section.category)}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={tightRevealViewport}
                 variants={fadeUpVariant}
                 className="mb-8 scroll-mt-32 rounded-[2.4rem] border border-border/70 bg-white/34 p-7 shadow-[0_18px_48px_rgba(36,35,39,0.06)] sm:mb-10 sm:p-9"
               >
@@ -144,7 +150,7 @@ export default function Menu() {
                   variants={staggerContainer}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true, margin: "-30px" }}
+                  viewport={tightRevealViewport}
                   className="mt-4 divide-y divide-border/45"
                 >
                   {section.items.map((item) => (

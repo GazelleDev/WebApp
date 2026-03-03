@@ -1,7 +1,18 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { PageTransition, fadeUpVariant, staggerContainer } from "@/components/ui/PageTransition";
+import {
+  PageTransition,
+  createRevealVariant,
+  fadeUpVariant,
+  heroCopyVariant,
+  heroVisualVariant,
+  overlayCardVariant,
+  revealViewport,
+  staggerContainer,
+  tightRevealViewport,
+  tightStaggerContainer,
+} from "@/components/ui/PageTransition";
 import storyImgOne from "@assets/Screenshot_2026-03-02_at_12.08.31_PM_1772562150247.png";
 import storyImgTwo from "@assets/Screenshot_2026-03-02_at_12.09.38_PM_1772562150247.png";
 
@@ -45,9 +56,9 @@ export default function About() {
         <section className="mx-auto max-w-[92rem]">
           <div className="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroCopyVariant}
               className="relative overflow-hidden rounded-[3rem] border border-border/70 bg-card/82 p-8 shadow-[0_28px_80px_rgba(36,35,39,0.12)] sm:p-10 lg:min-h-[39rem] lg:p-12"
             >
               <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-white/45 to-transparent" />
@@ -93,7 +104,7 @@ export default function About() {
                 </div>
 
                 <motion.div
-                  variants={staggerContainer}
+                  variants={tightStaggerContainer}
                   initial="hidden"
                   animate="visible"
                   className="mt-12 grid gap-3"
@@ -117,9 +128,9 @@ export default function About() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroVisualVariant}
               className="grid gap-6 lg:grid-rows-[1.05fr_0.95fr]"
             >
               <div className="relative min-h-[22rem] overflow-hidden rounded-[3rem] border border-[#9F7965]/40 bg-[#242327] p-4 shadow-[0_30px_90px_rgba(36,35,39,0.24)] sm:p-5">
@@ -147,10 +158,10 @@ export default function About() {
 
               <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.6 }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={tightRevealViewport}
+                  variants={overlayCardVariant}
                   className="relative overflow-hidden rounded-[2.4rem] border border-[#9F7965]/35 bg-[#242327] p-4 shadow-[0_24px_70px_rgba(36,35,39,0.16)]"
                 >
                   <img
@@ -172,10 +183,10 @@ export default function About() {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={tightRevealViewport}
+                  variants={createRevealVariant({ distance: 16, delay: 0.1, duration: 0.62, scale: 0.985 })}
                   className="rounded-[2.4rem] border border-border/70 bg-card/70 p-7 shadow-[0_20px_60px_rgba(36,35,39,0.08)]"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
@@ -208,7 +219,7 @@ export default function About() {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
+              viewport={revealViewport}
               variants={fadeUpVariant}
               className="rounded-[2.75rem] border border-border/70 bg-background/92 p-7 shadow-[0_22px_60px_rgba(36,35,39,0.07)] sm:p-8 lg:p-10"
             >
@@ -234,7 +245,7 @@ export default function About() {
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={tightRevealViewport}
               className="grid gap-5"
             >
               {principles.map((item, index) => (

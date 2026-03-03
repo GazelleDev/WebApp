@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
 import { Clock3, Mail, MapPin, Navigation, Phone } from "lucide-react";
-import { PageTransition, fadeUpVariant } from "@/components/ui/PageTransition";
+import {
+  PageTransition,
+  fadeUpVariant,
+  heroCopyVariant,
+  heroVisualVariant,
+} from "@/components/ui/PageTransition";
 
 const addressLines = [
   "1240 Heritage Avenue",
@@ -53,9 +58,9 @@ export default function Location() {
 
           <div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroCopyVariant}
               className="rounded-[3rem] border border-[#9F7965]/28 bg-card/78 p-8 shadow-[0_28px_80px_rgba(36,35,39,0.10)] sm:p-10"
             >
               <div className="flex flex-col gap-11">
@@ -145,9 +150,9 @@ export default function Location() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={heroVisualVariant}
               className="relative min-h-[42rem] overflow-hidden rounded-[3rem] border border-[#9F7965]/28 bg-[#d8d0c8] shadow-[0_30px_90px_rgba(36,35,39,0.14)]"
             >
               <iframe
