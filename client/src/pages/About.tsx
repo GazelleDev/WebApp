@@ -1,5 +1,7 @@
 import { PageTransition, fadeUpVariant } from "@/components/ui/PageTransition";
 import { motion } from "framer-motion";
+import storyImgOne from "@assets/Screenshot_2026-03-02_at_12.08.31_PM_1772562150247.png";
+import storyImgTwo from "@assets/Screenshot_2026-03-02_at_12.09.38_PM_1772562150247.png";
 
 export default function About() {
   return (
@@ -28,10 +30,9 @@ export default function About() {
             viewport={{ once: true }}
             className="rounded-t-full overflow-hidden aspect-[4/5]"
           >
-            {/* barista making coffee */}
             <img 
-              src="https://pixabay.com/get/gc30f05129181553f7fbce38a17c6c894c7bffa0a5a270459e594d93ae4ded0dabb1ebf1dcbdd001e80880d957528f1e4d652d1ce29c1e785a1eb58392337ddcc_1280.jpg" 
-              alt="Barista" 
+              src={storyImgOne}
+              alt="Gazelle interior seating"
               className="w-full h-full object-cover"
             />
           </motion.div>
@@ -42,10 +43,9 @@ export default function About() {
             transition={{ delay: 0.2 }}
             className="rounded-b-full overflow-hidden aspect-[4/5] md:mt-24"
           >
-            {/* coffee beans roasting */}
             <img 
-              src="https://images.unsplash.com/photo-1611162458324-aae1eb4129a4?auto=format&fit=crop&q=80&w=800" 
-              alt="Coffee beans" 
+              src={storyImgTwo}
+              alt="Gazelle entrance and architectural arches"
               className="w-full h-full object-cover"
             />
           </motion.div>

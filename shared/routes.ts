@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import { insertContactMessageSchema, insertNewsletterSubscriberSchema } from './schema';
 
+const successResponseSchema = z.object({
+  success: z.literal(true),
+  message: z.string(),
+});
+
 export const errorSchemas = {
   validation: z.object({
     message: z.string(),
@@ -18,8 +23,9 @@ export const api = {
       path: '/api/contact' as const,
       input: insertContactMessageSchema,
       responses: {
-        201: z.object({ success: z.boolean(), message: z.string() }),
+        201: successResponseSchema,
         400: errorSchemas.validation,
+        500: errorSchemas.internal,
       },
     },
   },
@@ -29,8 +35,10 @@ export const api = {
       path: '/api/newsletter' as const,
       input: insertNewsletterSubscriberSchema,
       responses: {
-        201: z.object({ success: z.boolean(), message: z.string() }),
+        200: successResponseSchema,
+        201: successResponseSchema,
         400: errorSchemas.validation,
+        500: errorSchemas.internal,
       },
     },
   },

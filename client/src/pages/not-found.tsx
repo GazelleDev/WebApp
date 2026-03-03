@@ -1,21 +1,27 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "wouter";
 import { AlertCircle } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md mx-4">
-        <CardContent className="pt-6">
-          <div className="flex mb-4 gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <h1 className="text-2xl font-bold text-gray-900">404 Page Not Found</h1>
-          </div>
-
-          <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
+    <div className="min-h-screen bg-background px-6 pt-32 pb-24">
+      <div className="mx-auto flex max-w-2xl flex-col items-start gap-8 rounded-[2rem] border border-border/70 bg-card p-10 shadow-sm">
+        <div className="flex items-center gap-3 text-accent">
+          <AlertCircle className="h-7 w-7" />
+          <span className="text-sm tracking-[0.24em] uppercase">Page Not Found</span>
+        </div>
+        <div>
+          <h1 className="mb-4 text-4xl md:text-5xl font-display">This page isn&apos;t part of the Gazelle site.</h1>
+          <p className="max-w-xl text-lg text-muted-foreground font-light leading-relaxed">
+            The route you opened does not exist in the current build. Use the main navigation or return to the homepage.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+        <Link
+          href="/"
+          className="inline-flex items-center rounded-sm bg-foreground px-6 py-3 text-sm uppercase tracking-[0.2em] text-background transition-colors hover:bg-foreground/90"
+        >
+          Return Home
+        </Link>
+      </div>
     </div>
   );
 }
