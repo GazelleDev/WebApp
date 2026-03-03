@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { Link } from "wouter";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, X } from "lucide-react";
 import { PageTransition, fadeUpVariant, staggerContainer } from "@/components/ui/PageTransition";
-import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 
 import img1 from "@assets/Screenshot_2026-03-02_at_12.00.23_PM_1772562150247.png";
 import img2 from "@assets/Screenshot_2026-03-02_at_12.04.42_PM_1772562150247.png";
@@ -15,90 +16,329 @@ import img9 from "@assets/Screenshot_2026-03-02_at_12.09.38_PM_1772562150247.png
 import img10 from "@assets/Screenshot_2026-03-02_at_12.10.04_PM_1772562150247.png";
 import img11 from "@assets/Screenshot_2026-03-02_at_12.10.32_PM_1772562150247.png";
 
-const galleryImages = [
-  { src: img1, alt: "Gazelle Interior - Main Dining Area" },
-  { src: img2, alt: "Gazelle Interior - Counter and Arched Feature" },
-  { src: img3, alt: "Gazelle Interior - Seating and Lighting" },
-  { src: img4, alt: "Gazelle Interior - Marble Counter Detail" },
-  { src: img5, alt: "Gazelle Interior - Arched Logo Wall" },
-  { src: img6, alt: "Gazelle Interior - Dining Perspective" },
-  { src: img7, alt: "Gazelle Interior - Modern Ceiling Lighting" },
-  { src: img8, alt: "Gazelle Interior - Window View and Seating" },
-  { src: img9, alt: "Gazelle Interior - Entry and Accessibility Ramp" },
-  { src: img10, alt: "Gazelle Interior - Service Station Detail" },
-  { src: img11, alt: "Gazelle Interior - Architectural Arches" },
+type GalleryImage = {
+  src: string;
+  alt: string;
+  title: string;
+  note: string;
+  layout: string;
+};
+
+const gallerySignals = [
+  { label: "Render Count", value: "11 spatial studies" },
+  { label: "Tone", value: "Warm, restrained, cinematic" },
+  { label: "Focus", value: "Arches, light, material calm" },
+];
+
+const galleryImages: GalleryImage[] = [
+  {
+    src: img1,
+    alt: "Gazelle Interior - Main Dining Area",
+    title: "Main dining room",
+    note: "Long sightlines and softened light establish the room before any service moment begins.",
+    layout: "md:col-span-2 xl:col-span-2 xl:row-span-2",
+  },
+  {
+    src: img2,
+    alt: "Gazelle Interior - Counter and Arched Feature",
+    title: "Counter study",
+    note: "Service architecture is treated as part of the identity, not just back-of-house function.",
+    layout: "",
+  },
+  {
+    src: img3,
+    alt: "Gazelle Interior - Seating and Lighting",
+    title: "Light and seating",
+    note: "The room is meant to feel calm even when it is fully occupied.",
+    layout: "",
+  },
+  {
+    src: img4,
+    alt: "Gazelle Interior - Marble Counter Detail",
+    title: "Material detail",
+    note: "Stone, edge softness, and warm contrast give the space its tactile rhythm.",
+    layout: "",
+  },
+  {
+    src: img5,
+    alt: "Gazelle Interior - Arched Logo Wall",
+    title: "Brand wall",
+    note: "Identity marks are integrated into the space rather than applied on top of it.",
+    layout: "xl:row-span-2",
+  },
+  {
+    src: img6,
+    alt: "Gazelle Interior - Dining Perspective",
+    title: "Dining perspective",
+    note: "A quieter cafe experience depends on spatial pacing as much as menu design.",
+    layout: "md:col-span-2 xl:col-span-2",
+  },
+  {
+    src: img7,
+    alt: "Gazelle Interior - Modern Ceiling Lighting",
+    title: "Ceiling rhythm",
+    note: "Lighting works here as atmosphere, not visual spectacle.",
+    layout: "",
+  },
+  {
+    src: img8,
+    alt: "Gazelle Interior - Window View and Seating",
+    title: "Window edge",
+    note: "Perimeter seating is part of the emotional tempo of the room.",
+    layout: "",
+  },
+  {
+    src: img9,
+    alt: "Gazelle Interior - Entry and Accessibility Ramp",
+    title: "Arrival sequence",
+    note: "The threshold into Gazelle should feel softened, deliberate, and memorable.",
+    layout: "",
+  },
+  {
+    src: img10,
+    alt: "Gazelle Interior - Service Station Detail",
+    title: "Service station",
+    note: "Operational moments are still designed to feel aligned with the larger mood.",
+    layout: "md:col-span-2 xl:col-span-2",
+  },
+  {
+    src: img11,
+    alt: "Gazelle Interior - Architectural Arches",
+    title: "Architectural repeat",
+    note: "Repeated curves create the calm visual language running through the whole brand world.",
+    layout: "",
+  },
 ];
 
 export default function Gallery() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   return (
-    <PageTransition className="pt-32 pb-24 bg-background min-h-screen">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={fadeUpVariant}
-          className="mb-16"
-        >
-          <h1 className="text-5xl md:text-7xl font-display mb-6">Atmosphere</h1>
-          <p className="text-muted-foreground text-lg max-w-xl font-light">
-            Glimpses into the meticulously designed sanctuary that is Gazelle.
-          </p>
-        </motion.div>
-
-        <motion.div 
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-        >
-          {galleryImages.map((img, idx) => (
-            <motion.div 
-              key={idx} 
-              variants={fadeUpVariant}
-              className={`relative cursor-pointer overflow-hidden group ${
-                idx % 5 === 0 ? "sm:col-span-2 lg:col-span-2 aspect-[16/9] rounded-2xl" : "aspect-square rounded-[var(--radius-arch)]"
-              }`}
-              onClick={() => setSelectedImage(img.src)}
+    <PageTransition className="min-h-screen bg-background pb-24 pt-32">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-[92rem]">
+          <div className="grid gap-6 lg:grid-cols-[0.84fr_1.16fr]">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              className="relative overflow-hidden rounded-[3rem] border border-border/70 bg-card/82 p-8 shadow-[0_28px_80px_rgba(36,35,39,0.12)] sm:p-10 lg:min-h-[39rem] lg:p-12"
             >
-              <img 
-                src={img.src} 
-                alt={img.alt} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+              <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-white/45 to-transparent" />
+              <div className="absolute -left-12 top-12 h-48 w-48 rounded-full bg-[#C0987E]/22 blur-3xl" />
+              <div className="absolute bottom-0 right-0 h-56 w-56 rounded-full bg-[#9F7965]/16 blur-3xl" />
+
+              <div className="relative flex h-full flex-col justify-between">
+                <div className="max-w-3xl">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/35 bg-white/55 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
+                    Atmosphere Gallery
+                  </div>
+
+                  <h1 className="mt-8 max-w-3xl text-5xl font-display leading-[0.92] text-foreground md:text-7xl lg:text-[5.6rem]">
+                    Spatial studies
+                    <br />
+                    <span className="italic text-[#9F7965]">for Gazelle.</span>
+                  </h1>
+
+                  <p className="mt-8 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
+                    A quieter read of the Gazelle world through light, material, and spatial rhythm.
+                  </p>
+
+                  <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                    <Link
+                      href="/location"
+                      className="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background transition-colors hover:bg-foreground/90"
+                    >
+                      See the Location
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+
+                <motion.div
+                  variants={staggerContainer}
+                  initial="hidden"
+                  animate="visible"
+                  className="mt-12 grid gap-3 md:grid-cols-3"
+                >
+                  {gallerySignals.map((item) => (
+                    <motion.div
+                      key={item.label}
+                      variants={fadeUpVariant}
+                      className="rounded-[1.6rem] border border-white/55 bg-white/45 px-5 py-5 backdrop-blur-sm"
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
+                        {item.label}
+                      </p>
+                      <p className="mt-3 text-sm leading-relaxed text-foreground/86">
+                        {item.value}
+                      </p>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
             </motion.div>
-          ))}
-        </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="relative min-h-[39rem] overflow-hidden rounded-[3rem] border border-[#9F7965]/40 bg-[#242327] p-4 shadow-[0_30px_90px_rgba(36,35,39,0.24)] sm:p-5"
+            >
+              <img
+                src={img1}
+                alt="Gazelle flagship interior hero"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(36,35,39,0.08),rgba(36,35,39,0.22)_38%,rgba(36,35,39,0.76)_100%)]" />
+
+              <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#242327]/28 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-white/78 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
+                Featured Frame
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 18, y: -8 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ duration: 0.65, delay: 0.28 }}
+                className="absolute right-5 top-5 hidden w-[12.5rem] rounded-[2rem] border border-white/10 bg-[#242327]/34 p-3 backdrop-blur-md xl:block"
+              >
+                <div className="overflow-hidden rounded-[1.4rem]">
+                  <img
+                    src={img10}
+                    alt="Gazelle service station detail"
+                    className="aspect-[4/5] w-full object-cover"
+                  />
+                </div>
+                <p className="mt-3 text-[10px] uppercase tracking-[0.26em] text-white/50">
+                  Service Detail
+                </p>
+              </motion.div>
+
+              <div className="absolute inset-x-5 bottom-5 grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.35 }}
+                  className="rounded-[2.15rem] border border-white/10 bg-[#242327]/30 p-6 backdrop-blur-md"
+                >
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
+                    Visual Tone
+                  </p>
+                  <p className="mt-3 max-w-md text-[1.8rem] font-display leading-[1.02] text-white md:text-[2.1rem]">
+                    Quiet, tactile, and cinematic.
+                  </p>
+                </motion.div>
+
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.45 }}
+                  onClick={() => setSelectedImage(galleryImages[0])}
+                  className="rounded-[2.15rem] border border-white/10 bg-[#C0987E] p-6 text-left text-[#242327] transition-colors hover:bg-[#9F7965] hover:text-[#f4ece6]"
+                >
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-current/70">
+                    Open Frame
+                  </p>
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-[92rem]">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUpVariant}
+            className="mb-8"
+          >
+            <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
+              Curated Frames
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className="grid auto-rows-[16rem] gap-5 md:auto-rows-[18rem] md:grid-cols-2 xl:auto-rows-[14rem] xl:grid-cols-4"
+          >
+            {galleryImages.map((image) => (
+              <motion.button
+                key={image.alt}
+                type="button"
+                variants={fadeUpVariant}
+                onClick={() => setSelectedImage(image)}
+                className={`group relative overflow-hidden rounded-[2.3rem] border border-border/70 bg-card/60 text-left shadow-[0_18px_48px_rgba(36,35,39,0.08)] ${image.layout}`}
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(36,35,39,0.02),rgba(36,35,39,0.18)_42%,rgba(36,35,39,0.86)_100%)] transition-opacity duration-500 group-hover:opacity-95" />
+
+                <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
+                    {image.title}
+                  </p>
+                </div>
+              </motion.button>
+            ))}
+          </motion.div>
+        </section>
       </div>
 
-      {/* Lightbox */}
       <AnimatePresence>
         {selectedImage && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-md flex items-center justify-center p-4 md:p-12"
+            className="fixed inset-0 z-[100] bg-[#242327]/88 p-4 backdrop-blur-md md:p-8"
             onClick={() => setSelectedImage(null)}
           >
-            <button 
-              className="absolute top-6 right-6 p-2 text-foreground hover:text-accent transition-colors z-[101]"
+            <button
+              type="button"
+              className="absolute right-5 top-5 z-[101] inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f4ece6] transition-colors hover:text-[#C0987E]"
               onClick={() => setSelectedImage(null)}
+              aria-label="Close gallery lightbox"
             >
-              <X className="w-8 h-8" />
+              <X className="h-5 w-5" />
             </button>
-            <motion.img 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25 }}
-              src={selectedImage} 
-              alt="Selected" 
-              className="max-w-full max-h-full rounded-sm object-contain shadow-2xl"
-              onClick={(e) => e.stopPropagation()} 
-            />
+
+            <div className="flex h-full items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 18 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="relative w-full max-w-6xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex max-h-[82vh] items-center justify-center overflow-hidden rounded-[2.4rem] border border-white/10 bg-black/10 p-3">
+                  <img
+                    src={selectedImage.src}
+                    alt={selectedImage.alt}
+                    className="max-h-[78vh] w-full rounded-[1.8rem] object-contain"
+                  />
+                </div>
+
+                <div className="pointer-events-none absolute inset-x-6 bottom-6 rounded-[1.8rem] border border-white/10 bg-[#242327]/58 p-5 text-[#f4ece6] backdrop-blur-md md:max-w-[26rem]">
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
+                    Expanded Frame
+                  </p>
+                  <h3 className="mt-3 text-[1.8rem] font-display leading-none text-white">
+                    {selectedImage.title}
+                  </h3>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

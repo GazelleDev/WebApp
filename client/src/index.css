@@ -10,34 +10,35 @@
     --font-brand: 'Fraunces', serif;
     --font-body: 'Inter', sans-serif;
 
-    /* Warm cream/beige interior, soft luxury */
-    /* Background #F6F1E8 */
-    --background: 39 37% 94%;
-    /* Text #1D1A17 */
-    --foreground: 30 11% 10%;
+    --brand-dark: #242327;
+    --brand-beige-light: #C0987E;
+    --brand-beige-dark: #9F7965;
+
+    /* Background #F4ECE6 */
+    --background: 26 39% 93%;
+    /* Brand dark #242327 */
+    --foreground: 255 5% 15%;
     
-    /* Surface #EFE6DA */
-    --card: 34 35% 90%;
-    --card-foreground: 30 11% 10%;
+    /* Soft surface aligned with the beige palette */
+    --card: 23 37% 86%;
+    --card-foreground: 255 5% 15%;
     
-    --popover: 39 37% 94%;
-    --popover-foreground: 30 11% 10%;
+    --popover: 26 39% 93%;
+    --popover-foreground: 255 5% 15%;
     
-    /* Text #1D1A17 */
-    --primary: 30 11% 10%;
-    --primary-foreground: 39 37% 94%;
+    --primary: 255 5% 15%;
+    --primary-foreground: 26 39% 93%;
     
-    /* Surface #EFE6DA */
-    --secondary: 34 35% 90%;
-    --secondary-foreground: 30 11% 10%;
+    --secondary: 24 30% 88%;
+    --secondary-foreground: 255 5% 15%;
     
-    /* Muted #6B625A */
-    --muted: 30 12% 85%;
-    --muted-foreground: 30 9% 39%;
+    --muted: 24 32% 89%;
+    /* Darker beige #9F7965 */
+    --muted-foreground: 21 23% 51%;
     
-    /* Accent #C8A25A (Gold/Brass) */
-    --accent: 39 52% 57%;
-    --accent-foreground: 0 0% 100%;
+    /* Lighter beige #C0987E */
+    --accent: 24 34% 62%;
+    --accent-foreground: 255 5% 15%;
 
     /* Arched Motifs */
     --radius-arch: 100px 100px 0 0;
@@ -45,10 +46,9 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Border #D8CDBF */
-    --border: 34 23% 80%;
-    --input: 34 23% 80%;
-    --ring: 39 49% 57%;
+    --border: 23 28% 77%;
+    --input: 23 28% 77%;
+    --ring: 24 34% 62%;
 
     --radius: 1rem;
   }

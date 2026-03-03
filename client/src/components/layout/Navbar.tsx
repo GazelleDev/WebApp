@@ -52,15 +52,15 @@ export function Navbar() {
         >
           <div
             className={cn(
-              "rounded-[1.75rem] border px-4 py-2.5 shadow-[0_18px_60px_rgba(40,26,12,0.16)] backdrop-blur-xl transition-all duration-500 sm:px-5 lg:px-6",
+              "rounded-[1.75rem] border px-4 py-2.5 shadow-[0_18px_60px_rgba(36,35,39,0.16)] backdrop-blur-xl transition-all duration-500 sm:px-5 lg:px-6",
               isOverlay
-                ? "border-white/15 bg-black/20 text-white"
+                ? "border-white/15 bg-[#242327]/22 text-white"
                 : "border-border/70 bg-background/88 text-foreground",
             )}
           >
             <div className="flex items-center justify-between gap-3">
               <Link href="/" className="group flex min-w-0 items-center">
-                <span className="min-w-0 truncate font-brand text-[1.7rem] leading-none text-[#ab7e32]">
+                <span className="min-w-0 truncate font-brand text-[1.7rem] leading-none text-[#C0987E]">
                   Gazelle.
                 </span>
               </Link>
@@ -69,7 +69,7 @@ export function Navbar() {
                 className={cn(
                   "hidden lg:flex items-center gap-1 rounded-full border p-1",
                   isOverlay
-                    ? "border-white/12 bg-white/5"
+                    ? "border-white/16 bg-[#242327]/42 shadow-[0_12px_30px_rgba(36,35,39,0.18)]"
                     : "border-border/70 bg-card/65",
                 )}
               >
@@ -86,7 +86,7 @@ export function Navbar() {
                         isActive
                           ? "text-foreground"
                           : isOverlay
-                            ? "text-white/72 hover:text-white"
+                            ? "text-[#9F7965] hover:text-[#242327]"
                             : "text-muted-foreground hover:text-foreground",
                       )}
                     >
@@ -97,7 +97,7 @@ export function Navbar() {
                             "absolute inset-0 rounded-full",
                             isOverlay
                               ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
-                              : "bg-background shadow-[inset_0_0_0_1px_rgba(29,26,23,0.05),0_8px_24px_rgba(74,54,27,0.08)]",
+                              : "bg-background shadow-[inset_0_0_0_1px_rgba(36,35,39,0.05),0_8px_24px_rgba(36,35,39,0.08)]",
                           )}
                           transition={{ type: "spring", stiffness: 350, damping: 30 }}
                         />
@@ -113,7 +113,7 @@ export function Navbar() {
                   className={cn(
                     "inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[10px] uppercase tracking-[0.24em]",
                     isOverlay
-                      ? "border-white/15 bg-white/8 text-white/80"
+                      ? "border-[#9F7965]/35 bg-[#f4ece6]/55 text-[#242327]"
                       : "border-border/70 bg-card/75 text-muted-foreground",
                   )}
                 >
@@ -164,7 +164,7 @@ export function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/35 backdrop-blur-sm"
+              className="fixed inset-0 z-40 bg-[#242327]/35 backdrop-blur-sm"
               onClick={() => setMobileMenuOpen(false)}
             />
             <motion.div
@@ -173,7 +173,7 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-4 top-24 z-50 rounded-[2rem] border border-border/70 bg-background/95 p-6 shadow-[0_32px_80px_rgba(36,22,8,0.24)] backdrop-blur-2xl sm:inset-x-6"
+              className="fixed inset-x-4 top-24 z-50 rounded-[2rem] border border-border/70 bg-background/95 p-6 shadow-[0_32px_80px_rgba(36,35,39,0.24)] backdrop-blur-2xl sm:inset-x-6"
             >
               <div className="mb-8 flex items-start justify-between gap-4">
                 <div>
