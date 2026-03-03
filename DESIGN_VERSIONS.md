@@ -2,7 +2,14 @@
 
 This project now uses a simple git branch + worktree flow for design explorations.
 
-## Baseline
+## Branch Roles
+
+- `main`: approved design line and the branch that should stay safe to share or deploy.
+- `design/baseline-v1`: frozen visual checkpoint. Do not keep iterating here.
+- `design/exploration-v2`: active design branch for the current round of refinement.
+- `design/<variant-name>`: short-lived experiments created from a baseline or exploration branch.
+
+## Current Baseline
 
 - Current stable design branch: `design/baseline-v1`
 - Use that branch as the starting point for any new visual exploration.
@@ -29,6 +36,20 @@ Recommended branch names:
 - `design/navbar-alt`
 - `design/footer-refine`
 - `design/palette-warm-dark`
+
+## Promote an Approved Design
+
+When a variant is approved, merge it into `main` and optionally create a new frozen baseline:
+
+```bash
+./script/promote-design-branch.sh design/exploration-v2 baseline-v2
+```
+
+That will:
+
+- merge the approved design branch into `main`
+- create a new branch named `design/baseline-v2`
+- create a matching tag named `design-baseline-v2`
 
 ## Compare Versions
 
