@@ -3,19 +3,30 @@ import { PageTransition, fadeUpVariant, staggerContainer } from "@/components/ui
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-const images = [
-  // coffee shop interior wide
-  "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=800",
-  // latte art close up
-  "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=800",
-  // pastry detail
-  "https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&q=80&w=800",
-  // exterior storefront
-  "https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&q=80&w=800",
-  // people talking
-  "https://images.unsplash.com/photo-1521017430205-959c9415494a?auto=format&fit=crop&q=80&w=800",
-  // matcha prep
-  "https://images.unsplash.com/photo-1563822249548-9a72b6353cad?auto=format&fit=crop&q=80&w=800",
+import img1 from "@assets/Screenshot_2026-03-02_at_12.00.23_PM_1772562150247.png";
+import img2 from "@assets/Screenshot_2026-03-02_at_12.04.42_PM_1772562150247.png";
+import img3 from "@assets/Screenshot_2026-03-02_at_12.05.07_PM_1772562150247.png";
+import img4 from "@assets/Screenshot_2026-03-02_at_12.05.40_PM_1772562150247.png";
+import img5 from "@assets/Screenshot_2026-03-02_at_12.07.46_PM_1772562150247.png";
+import img6 from "@assets/Screenshot_2026-03-02_at_12.08.31_PM_1772562150247.png";
+import img7 from "@assets/Screenshot_2026-03-02_at_12.08.52_PM_1772562150247.png";
+import img8 from "@assets/Screenshot_2026-03-02_at_12.09.15_PM_1772562150247.png";
+import img9 from "@assets/Screenshot_2026-03-02_at_12.09.38_PM_1772562150247.png";
+import img10 from "@assets/Screenshot_2026-03-02_at_12.10.04_PM_1772562150247.png";
+import img11 from "@assets/Screenshot_2026-03-02_at_12.10.32_PM_1772562150247.png";
+
+const galleryImages = [
+  { src: img1, alt: "Gazelle Interior - Main Dining Area" },
+  { src: img2, alt: "Gazelle Interior - Counter and Arched Feature" },
+  { src: img3, alt: "Gazelle Interior - Seating and Lighting" },
+  { src: img4, alt: "Gazelle Interior - Marble Counter Detail" },
+  { src: img5, alt: "Gazelle Interior - Arched Logo Wall" },
+  { src: img6, alt: "Gazelle Interior - Dining Perspective" },
+  { src: img7, alt: "Gazelle Interior - Modern Ceiling Lighting" },
+  { src: img8, alt: "Gazelle Interior - Window View and Seating" },
+  { src: img9, alt: "Gazelle Interior - Entry and Accessibility Ramp" },
+  { src: img10, alt: "Gazelle Interior - Service Station Detail" },
+  { src: img11, alt: "Gazelle Interior - Architectural Arches" },
 ];
 
 export default function Gallery() {
@@ -32,7 +43,7 @@ export default function Gallery() {
         >
           <h1 className="text-5xl md:text-7xl font-display mb-6">Atmosphere</h1>
           <p className="text-muted-foreground text-lg max-w-xl font-light">
-            Glimpses into the daily life at Gazelle.
+            Glimpses into the meticulously designed sanctuary that is Gazelle.
           </p>
         </motion.div>
 
@@ -42,18 +53,18 @@ export default function Gallery() {
           animate="visible"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
-          {images.map((img, idx) => (
+          {galleryImages.map((img, idx) => (
             <motion.div 
               key={idx} 
               variants={fadeUpVariant}
               className={`relative cursor-pointer overflow-hidden group ${
-                idx === 0 || idx === 3 ? "sm:col-span-2 lg:col-span-2 aspect-[16/9] rounded-2xl" : "aspect-square rounded-[var(--radius-arch)]"
+                idx % 5 === 0 ? "sm:col-span-2 lg:col-span-2 aspect-[16/9] rounded-2xl" : "aspect-square rounded-[var(--radius-arch)]"
               }`}
-              onClick={() => setSelectedImage(img)}
+              onClick={() => setSelectedImage(img.src)}
             >
               <img 
-                src={img} 
-                alt={`Gallery image ${idx + 1}`} 
+                src={img.src} 
+                alt={img.alt} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
@@ -86,7 +97,7 @@ export default function Gallery() {
               src={selectedImage} 
               alt="Selected" 
               className="max-w-full max-h-full rounded-sm object-contain shadow-2xl"
-              onClick={(e) => e.stopPropagation()} // prevent closing when clicking image
+              onClick={(e) => e.stopPropagation()} 
             />
           </motion.div>
         )}

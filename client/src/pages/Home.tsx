@@ -2,6 +2,11 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { PageTransition, fadeUpVariant, staggerContainer } from "@/components/ui/PageTransition";
 import { ArrowRight } from "lucide-react";
+import heroImg from "@assets/Screenshot_2026-03-02_at_12.00.23_PM_1772562150247.png";
+import signature1 from "@assets/Screenshot_2026-03-02_at_12.07.46_PM_1772562150247.png";
+import signature2 from "@assets/Screenshot_2026-03-02_at_12.10.04_PM_1772562150247.png";
+import signature3 from "@assets/Screenshot_2026-03-02_at_12.05.40_PM_1772562150247.png";
+import atmosphereImg from "@assets/Screenshot_2026-03-02_at_12.05.07_PM_1772562150247.png";
 
 export default function Home() {
   return (
@@ -9,10 +14,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/30 z-10" />
-          {/* landing page hero scenic interior upscale coffee shop */}
+          <div className="absolute inset-0 bg-black/40 z-10" />
           <img 
-            src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=2000" 
+            src={heroImg} 
             alt="Gazelle Interior" 
             className="w-full h-full object-cover"
           />
@@ -82,22 +86,21 @@ export default function Home() {
               {
                 title: "The Gazelle Espresso",
                 desc: "Our house blend featuring notes of dark chocolate, wild berries, and toasted hazelnut.",
-                img: "https://images.unsplash.com/photo-1514432324607-a2ce7af41ce1?auto=format&fit=crop&q=80&w=800"
+                img: signature1
               },
               {
                 title: "Ceremonial Matcha",
                 desc: "First-harvest shade-grown leaves from Uji, Japan. Whisked to perfection.",
-                img: "https://images.unsplash.com/photo-1582787038161-512c0119e7dd?auto=format&fit=crop&q=80&w=800"
+                img: signature2
               },
               {
                 title: "Artisan Pastries",
                 desc: "Baked fresh daily by our in-house patissier using French butter and local flour.",
-                img: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&q=80&w=800"
+                img: signature3
               }
             ].map((item, i) => (
               <motion.div key={i} variants={fadeUpVariant} className="group cursor-pointer">
                 <div className="overflow-hidden rounded-[var(--radius-arch)] mb-6 relative aspect-[3/4] bg-card">
-                  {/* signature item image */}
                   <img 
                     src={item.img} 
                     alt={item.title}
@@ -117,10 +120,9 @@ export default function Home() {
       <section className="py-0 bg-card">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="h-[50vh] lg:h-auto relative">
-            {/* coffee shop aesthetic details */}
             <img 
-              src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=1200" 
-              alt="Pour over coffee detail" 
+              src={atmosphereImg} 
+              alt="Gazelle Atmosphere" 
               className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
