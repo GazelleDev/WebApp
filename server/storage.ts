@@ -1,38 +1,28 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { db } from "./db";
+import { 
+  contactMessages, 
+  newsletterSubscribers,
+  type ContactMessage, 
+  type CreateContactMessageRequest,
+  type NewsletterSubscriber,
+  type CreateNewsletterSubscriberRequest
+} from "@shared/schema";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  createContactMessage(message: CreateContactMessageRequest): Promise<ContactMessage>;
+  createNewsletterSubscriber(subscriber: CreateNewsletterSubscriberRequest): Promise<NewsletterSubscriber>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
+export class DatabaseStorage implements IStorage {
+  async createContactMessage(message: CreateContactMessageRequest): Promise<ContactMessage> {
+    const [newMessage] = await db.insert(contactMessages).values(message).returning();
+    return newMessage;
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async createNewsletterSubscriber(subscriber: CreateNewsletterSubscriberRequest): Promise<NewsletterSubscriber> {
+    const [newSubscriber] = await db.insert(newsletterSubscribers).values(subscriber).returning();
+    return newSubscriber;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

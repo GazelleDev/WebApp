@@ -1,18 +1,50 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
+
+// Layout & UI
+import { Navbar } from "./components/layout/Navbar";
+import { Footer } from "./components/layout/Footer";
 import NotFound from "@/pages/not-found";
 
+// Pages
+import Home from "./pages/Home";
+import Menu from "./pages/Menu";
+import Location from "./pages/Location";
+import About from "./pages/About";
+import Gallery from "./pages/Gallery";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+
+// Scroll to top on route change
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  return null;
+}
+
 function Router() {
+  const [location] = useLocation();
+  
   return (
-    <Switch>
-      {/* Add pages below */}
-      {/* <Route path="/" component={Home}/> */}
-      {/* Fallback to 404 */}
-      <Route component={NotFound} />
-    </Switch>
+    <AnimatePresence mode="wait">
+      <Switch location={location} key={location}>
+        <Route path="/" component={Home} />
+        <Route path="/menu" component={Menu} />
+        <Route path="/location" component={Location} />
+        <Route path="/about" component={About} />
+        <Route path="/gallery" component={Gallery} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/privacy" component={Privacy} />
+        <Route component={NotFound} />
+      </Switch>
+    </AnimatePresence>
   );
 }
 
@@ -20,8 +52,15 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <div className="flex flex-col min-h-screen">
+          <ScrollToTop />
+          <Navbar />
+          <main className="flex-1">
+            <Router />
+          </main>
+          <Footer />
+        </div>
         <Toaster />
-        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );
