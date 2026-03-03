@@ -96,7 +96,7 @@ export default function Home() {
               }
             ].map((item, i) => (
               <motion.div key={i} variants={fadeUpVariant} className="group cursor-pointer">
-                <div className="overflow-hidden rounded-t-full mb-6 relative aspect-[3/4] bg-card">
+                <div className="overflow-hidden rounded-[var(--radius-arch)] mb-6 relative aspect-[3/4] bg-card">
                   {/* signature item image */}
                   <img 
                     src={item.img} 

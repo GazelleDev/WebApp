@@ -34,9 +34,12 @@
     --muted: 30 12% 85%;
     --muted-foreground: 30 9% 39%;
     
-    /* Accent #C8A25A */
-    --accent: 39 49% 57%;
+    /* Accent #C8A25A (Gold/Brass) */
+    --accent: 39 52% 57%;
     --accent-foreground: 0 0% 100%;
+
+    /* Arched Motifs */
+    --radius-arch: 100px 100px 0 0;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;

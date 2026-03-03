@@ -46,8 +46,8 @@ export default function Gallery() {
             <motion.div 
               key={idx} 
               variants={fadeUpVariant}
-              className={`relative cursor-pointer overflow-hidden rounded-2xl group ${
-                idx === 0 || idx === 3 ? "sm:col-span-2 lg:col-span-2 aspect-[16/9]" : "aspect-square"
+              className={`relative cursor-pointer overflow-hidden group ${
+                idx === 0 || idx === 3 ? "sm:col-span-2 lg:col-span-2 aspect-[16/9] rounded-2xl" : "aspect-square rounded-[var(--radius-arch)]"
               }`}
               onClick={() => setSelectedImage(img)}
             >
