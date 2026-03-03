@@ -18,14 +18,31 @@ export const newsletterSubscribers = pgTable("newsletter_subscribers", {
 });
 
 // === BASE SCHEMAS ===
-export const insertContactMessageSchema = createInsertSchema(contactMessages).omit({ 
-  id: true, 
-  createdAt: true 
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email("Enter a valid email address")
+  .max(320, "Email address is too long");
+
+export const insertContactMessageSchema = createInsertSchema(contactMessages, {
+  name: z.string().trim().min(2, "Name is required").max(80, "Name is too long"),
+  email: emailSchema,
+  message: z
+    .string()
+    .trim()
+    .min(10, "Message must be at least 10 characters")
+    .max(2000, "Message is too long"),
+}).omit({
+  id: true,
+  createdAt: true,
 });
 
-export const insertNewsletterSubscriberSchema = createInsertSchema(newsletterSubscribers).omit({ 
-  id: true, 
-  createdAt: true 
+export const insertNewsletterSubscriberSchema = createInsertSchema(newsletterSubscribers, {
+  email: emailSchema,
+}).omit({
+  id: true,
+  createdAt: true,
 });
 
 // === EXPLICIT API CONTRACT TYPES ===

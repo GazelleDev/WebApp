@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
+import type { CreateContactMessageRequest } from "@shared/schema";
 
 export function useCreateContact() {
   return useMutation({
-    mutationFn: async (data: typeof api.contact.create.input._type) => {
+    mutationFn: async (data: CreateContactMessageRequest) => {
       const res = await fetch(api.contact.create.path, {
         method: api.contact.create.method,
         headers: { "Content-Type": "application/json" },
@@ -11,11 +12,11 @@ export function useCreateContact() {
         credentials: "include",
       });
       
-      const json = await res.json();
+      const json = await res.json().catch(() => null);
       
       if (!res.ok) {
         if (res.status === 400) {
-          throw new Error(json.message || "Validation failed");
+          throw new Error(json?.message || "Validation failed");
         }
         throw new Error("Failed to send message");
       }

@@ -13,16 +13,59 @@ export interface IStorage {
   createNewsletterSubscriber(subscriber: CreateNewsletterSubscriberRequest): Promise<NewsletterSubscriber>;
 }
 
-export class DatabaseStorage implements IStorage {
+class MemoryStorage implements IStorage {
+  private contactMessageId = 1;
+  private newsletterSubscriberId = 1;
+  private readonly contactMessages: ContactMessage[] = [];
+  private readonly newsletterSubscribers: NewsletterSubscriber[] = [];
+
   async createContactMessage(message: CreateContactMessageRequest): Promise<ContactMessage> {
-    const [newMessage] = await db.insert(contactMessages).values(message).returning();
+    const newMessage: ContactMessage = {
+      id: this.contactMessageId++,
+      ...message,
+      createdAt: new Date(),
+    };
+
+    this.contactMessages.push(newMessage);
     return newMessage;
   }
 
   async createNewsletterSubscriber(subscriber: CreateNewsletterSubscriberRequest): Promise<NewsletterSubscriber> {
-    const [newSubscriber] = await db.insert(newsletterSubscribers).values(subscriber).returning();
+    const existingSubscriber = this.newsletterSubscribers.find(
+      (entry) => entry.email === subscriber.email,
+    );
+
+    if (existingSubscriber) {
+      throw new Error("duplicate key value violates unique constraint");
+    }
+
+    const newSubscriber: NewsletterSubscriber = {
+      id: this.newsletterSubscriberId++,
+      ...subscriber,
+      createdAt: new Date(),
+    };
+
+    this.newsletterSubscribers.push(newSubscriber);
     return newSubscriber;
   }
 }
 
-export const storage = new DatabaseStorage();
+export class DatabaseStorage implements IStorage {
+  constructor(private readonly database: NonNullable<typeof db>) {}
+
+  async createContactMessage(message: CreateContactMessageRequest): Promise<ContactMessage> {
+    const [newMessage] = await this.database.insert(contactMessages).values(message).returning();
+    return newMessage;
+  }
+
+  async createNewsletterSubscriber(subscriber: CreateNewsletterSubscriberRequest): Promise<NewsletterSubscriber> {
+    const [newSubscriber] = await this.database
+      .insert(newsletterSubscribers)
+      .values(subscriber)
+      .returning();
+    return newSubscriber;
+  }
+}
+
+export const storageMode = db ? "database" : "memory";
+export const storage: IStorage = db ? new DatabaseStorage(db) : new MemoryStorage();

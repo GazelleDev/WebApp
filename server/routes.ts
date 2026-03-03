@@ -1,8 +1,17 @@
-import type { Express } from "express";
-import { createServer, type Server } from "http";
+import type { Express, Response } from "express";
+import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
+
+function sendValidationError(res: Response, error: z.ZodError) {
+  const issue = error.issues[0];
+
+  return res.status(400).json({
+    message: issue?.message ?? "Validation failed",
+    field: issue?.path.join("."),
+  });
+}
 
 export async function registerRoutes(
   httpServer: Server,
@@ -16,10 +25,7 @@ export async function registerRoutes(
       res.status(201).json({ success: true, message: "Message sent successfully" });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({
-          message: err.errors[0].message,
-          field: err.errors[0].path.join('.'),
-        });
+        return sendValidationError(res, err);
       }
       res.status(500).json({ message: "Internal server error" });
     }
@@ -33,15 +39,13 @@ export async function registerRoutes(
       res.status(201).json({ success: true, message: "Subscribed to newsletter successfully" });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({
-          message: err.errors[0].message,
-          field: err.errors[0].path.join('.'),
-        });
+        return sendValidationError(res, err);
       }
-      // Consider duplicate email as handled gracefully
+
       if (err instanceof Error && err.message.includes('duplicate key value')) {
-        return res.status(201).json({ success: true, message: "Already subscribed to newsletter" });
+        return res.status(200).json({ success: true, message: "Already subscribed to newsletter" });
       }
+
       res.status(500).json({ message: "Internal server error" });
     }
   });
