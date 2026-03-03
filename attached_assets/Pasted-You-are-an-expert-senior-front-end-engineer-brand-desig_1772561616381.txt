@@ -1,0 +1,130 @@
+You are an expert senior front-end engineer + brand designer. Build a production-ready marketing website for a new coffee shop called “Gazelle”.
+
+GOAL
+Create a high-end, modern, fast website that visually matches the attached store renderings: warm cream/beige interior, marble surfaces, brass/gold details, soft architectural curves/arches, subtle luxury, plants, clean lines, airy space. (See the PDF renderings: bright interior, golden accent lighting, arched feature wall with Gazelle mark, marble counters, wood seating.) Make the site feel premium, minimal, and calm.
+
+TECH STACK (Replit-friendly)
+- Next.js (App Router) + TypeScript
+- Tailwind CSS
+- Framer Motion for subtle animations
+- next/image for optimized images
+- next-sitemap (optional) OR create a simple sitemap.xml route
+- No database needed
+- Use a single environment variable for contact form email service ONLY if necessary. Otherwise implement a “mailto:” and a clean form UI.
+
+SITE STRUCTURE
+Create these routes:
+1) "/" Home (hero + sections)
+2) "/menu" Menu (beautiful, categorized menu page with placeholders)
+3) "/location" Location & Hours (map embed + parking notes placeholders)
+4) "/about" About (brand story + values)
+5) "/gallery" Gallery (grid + lightbox)
+6) "/contact" Contact (form + social links)
+7) "/privacy" basic privacy policy placeholder
+Add a top nav + footer on every page.
+
+DESIGN SYSTEM (match the renderings)
+Colors (Tailwind theme variables):
+- Background: warm ivory / sandstone (#F6F1E8-ish)
+- Surface: soft stone (#EFE6DA-ish)
+- Text: deep espresso (#1D1A17-ish)
+- Muted text: warm gray (#6B625A-ish)
+- Accent metallic: soft gold/brass (#C8A25A-ish) used sparingly
+- Line/border: subtle taupe (#D8CDBF-ish)
+
+Typography:
+- Headings: elegant serif (use a Google Font like "Cormorant Garamond" or "Playfair Display")
+- Body: modern sans (use "Inter" or "Manrope")
+Implement fonts with next/font/google.
+
+Visual language:
+- Rounded corners (2xl), soft shadows, subtle borders
+- Large whitespace, calm layout, premium feel
+- Use “arched” motifs: rounded top corners on some image frames/section containers
+- Add subtle gold accent lines and icons; never overdo it
+- Use gentle motion: fade/slide-in on scroll, micro-interactions on buttons
+
+CONTENT REQUIREMENTS
+Brand name: Gazelle
+Tagline ideas (choose one and implement): 
+- “Quiet luxury. Bold coffee.”
+- “Crafted coffee, elevated.”
+- “A modern coffee house.”
+
+Home page sections:
+- Hero: big headline + short subhead + two CTAs (“View Menu”, “Visit Us”)
+- Signature section: 3 feature cards (“Espresso”, “Matcha”, “Seasonal Specials”)
+- Atmosphere section: wide image + copy referencing warm stone, arches, airy seating
+- Featured items strip (3–5 items)
+- Location teaser: hours + address placeholder + “Get Directions”
+- Newsletter signup UI (non-functional ok, or simple mailto)
+- Social proof/testimonials (3 quotes placeholders)
+
+Menu page:
+- Categories: Espresso, Coffee, Matcha, Tea, Pastries, Seasonal
+- Each item: name, short description, price placeholder
+- Add “Dietary icons” system: VG, DF, GF (small badges)
+- Add a sticky category sidebar on desktop, collapsible on mobile
+
+Location page:
+- Address placeholder (leave as “[Your Address Here]”)
+- Hours table
+- Embedded Google Map iframe placeholder (use a placeholder src and a comment where to paste real one)
+- Parking notes + accessibility notes placeholders
+
+Gallery page:
+- Use the store renderings as the initial gallery images.
+- Create a simple lightbox modal on click.
+IMPORTANT: Put images in /public/gallery (name them 01.jpg, 02.jpg, etc). If images aren’t available, use placeholders and comment instructions.
+
+About page:
+- Brand story: premium, calm, community-forward
+- Values: craft, hospitality, design, consistency
+- A “What to expect” section (quiet seating, great lighting, intentional details)
+
+Contact page:
+- Clean contact form UI (name, email, message) with client-side validation
+- If no backend email: show a success toast and provide a mailto link fallback
+- Include Instagram/TikTok placeholders
+
+SEO + PERFORMANCE
+- Add proper metadata per route (title, description, open graph)
+- Create /robots.txt and /sitemap.xml (static is fine)
+- Ensure Lighthouse-friendly performance: optimized images, minimal JS
+
+COMPONENTS TO BUILD
+- <Navbar /> with active route highlighting + mobile slide-over
+- <Footer /> with hours, socials, and quick links
+- <Section /> wrapper with consistent spacing
+- <Button /> variants: primary (gold accent), secondary (outline), ghost
+- <Card /> for features/menu items
+- <Badge /> for dietary tags
+- <Lightbox /> for gallery
+- <AnimatedReveal /> wrapper using Framer Motion (reusable)
+
+COPYWRITING TONE
+Short, modern, confident, minimal. Avoid cheesy lines. Keep it premium.
+
+IMPLEMENTATION DETAILS
+1) Initialize Next.js + Tailwind.
+2) Add fonts and theme tokens (CSS variables) for colors.
+3) Build layout with navbar/footer and responsive container widths.
+4) Build each page with real sections, not empty placeholders.
+5) Add gallery images array and render with next/image.
+6) Make sure all pages look excellent on mobile.
+
+DELIVERABLE
+Provide a complete working Next.js repo with:
+- package.json scripts
+- app/ routes
+- components/
+- styles/globals.css
+- public/ with placeholder images + instructions
+Include a clear README explaining:
+- how to run
+- where to change address/hours/menu
+- how to swap gallery images
+- how to deploy on Replit
+
+QUALITY BAR
+This must look like a high-end coffee brand website: clean spacing, tasteful animations, cohesive styling, no generic bootstrap look.
