@@ -2,6 +2,15 @@
 
 This repo is set up to publish as a containerized full-stack app.
 
+Recommended host: Render.
+
+Why this is the default recommendation:
+
+- it handles a single Dockerized web service cleanly
+- managed Postgres is available in the same platform
+- health checks and deploy hooks are first-class
+- the repo can be deployed from `render.yaml`
+
 ## What Is Included
 
 - GitHub Actions CI on every push and pull request
@@ -48,7 +57,33 @@ For a real published deployment, configure these environment variables in your h
 
 `PORT` is usually provided by the host automatically. The app defaults to `5000`.
 
-## Optional GitHub Secrets For CD
+## Render Blueprint
+
+The repo includes [render.yaml](/Users/yazan/Documents/Gazelle/Dev/Brand-Design-Guide/render.yaml).
+
+It provisions:
+
+- `gazelle-web` as a Docker web service
+- `gazelle-db` as a managed Postgres database
+
+Default Render behavior in this setup:
+
+- region: `ohio`
+- web plan: `starter`
+- database plan: `basic-256mb`
+- health check path: `/api/health`
+- deploys only after GitHub checks pass
+
+Values still requiring manual entry in Render:
+
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+
+Render generates `SESSION_SECRET` automatically and injects `DATABASE_URL` from the managed database.
+
+## GitHub Secrets
+
+I could not set repository secrets from this environment because there is no authenticated GitHub API or CLI access here.
 
 Add these in the GitHub repository settings if you want the publish workflow to do more than push a container image:
 
@@ -64,6 +99,13 @@ Behavior:
 - If the deploy webhook secret is present, the workflow triggers it after the image is published
 
 If those secrets are missing, the workflow still publishes the image and skips the missing steps.
+
+For Render specifically:
+
+- `PRODUCTION_DATABASE_URL` should be the external Render Postgres connection string
+- `PRODUCTION_DEPLOY_WEBHOOK_URL` should be the Render deploy hook URL if you want GitHub Actions to trigger deploys directly
+
+If you use the included `render.yaml` with `autoDeployTrigger: checksPass`, Render can deploy after GitHub checks pass without the deploy-hook secret. In that setup, the GitHub secrets above are optional rather than required.
 
 ## Local Container Smoke Test
 
