@@ -27,6 +27,19 @@ export const errorSchemas = {
 };
 
 export const api = {
+  health: {
+    get: {
+      method: 'GET' as const,
+      path: '/api/health' as const,
+      responses: {
+        200: z.object({
+          status: z.literal('ok'),
+          storageMode: z.enum(['memory', 'database']),
+          adminEnabled: z.boolean(),
+        }),
+      },
+    },
+  },
   contact: {
     create: {
       method: 'POST' as const,

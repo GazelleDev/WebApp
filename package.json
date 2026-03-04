@@ -4,12 +4,16 @@
   "private": true,
   "description": "Marketing site and lightweight lead-capture backend for the Gazelle coffee brand concept.",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development node --import tsx server/index.ts",
     "build": "node --import tsx script/build.ts",
     "start": "NODE_ENV=production node dist/index.cjs",
     "check": "tsc",
+    "verify": "npm run check && npm run build",
     "db:push": "drizzle-kit push",
     "admin:seed": "node --import tsx script/admin-seed.ts"
   },

@@ -1,7 +1,7 @@
 import type { Express, NextFunction, Request, Response } from "express";
 import type { Server } from "http";
 import { z } from "zod";
-import { storage } from "./storage";
+import { storage, storageMode } from "./storage";
 import { api } from "@shared/routes";
 import {
   adminLoginRequestSchema,
@@ -111,6 +111,14 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express,
 ): Promise<Server> {
+  app.get(api.health.get.path, (_req, res) => {
+    return res.status(200).json({
+      status: "ok",
+      storageMode,
+      adminEnabled: isAdminEnabled(),
+    });
+  });
+
   app.get(api.publicContent.get.path, async (_req, res) => {
     try {
       const bootstrap = await storage.getPublicContentBootstrap();

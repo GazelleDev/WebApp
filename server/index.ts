@@ -3,9 +3,12 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import { storageMode } from "./storage";
+import { pool } from "./db";
 
 const app = express();
 const httpServer = createServer(app);
+let isShuttingDown = false;
+const closeDatabasePool = pool as { end?: () => Promise<void> } | null;
 
 declare module "http" {
   interface IncomingMessage {
@@ -32,6 +35,30 @@ export function log(message: string, source = "express") {
   });
 
   console.log(`${formattedTime} [${source}] ${message}`);
+}
+
+async function shutdown(signal: string) {
+  if (isShuttingDown) {
+    return;
+  }
+
+  isShuttingDown = true;
+  log(`received ${signal}, shutting down`, "process");
+
+  httpServer.close(async (serverError) => {
+    if (serverError) {
+      console.error("HTTP shutdown error:", serverError);
+      process.exit(1);
+    }
+
+    try {
+      await closeDatabasePool?.end?.();
+      process.exit(0);
+    } catch (dbError) {
+      console.error("Database shutdown error:", dbError);
+      process.exit(1);
+    }
+  });
 }
 
 app.use((req, res, next) => {
@@ -107,4 +134,12 @@ app.use((req, res, next) => {
       log(`serving on port ${port}`);
     },
   );
+
+  process.on("SIGTERM", () => {
+    void shutdown("SIGTERM");
+  });
+
+  process.on("SIGINT", () => {
+    void shutdown("SIGINT");
+  });
 })();

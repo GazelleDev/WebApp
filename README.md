@@ -71,7 +71,19 @@ What still stays in code:
 
 - `npm run dev` starts the Vite/Express development server
 - `npm run check` runs TypeScript
+- `npm run verify` runs typecheck + production build
 - `npm run build` builds the client and bundles the server
 - `npm run start` runs the production build from `dist/index.cjs`
 - `npm run db:push` pushes the schema to Postgres with Drizzle
 - `npm run admin:seed` seeds the owner account and editable content documents
+
+## Publishing
+
+The repo now includes:
+
+- a production `Dockerfile`
+- GitHub Actions CI
+- GitHub Actions CD for publishing a container image to GHCR
+- an app health endpoint at `/api/health`
+
+Publishing and secret setup details are in [PUBLISHING.md](/Users/yazan/Documents/Gazelle/Dev/Brand-Design-Guide/PUBLISHING.md).
