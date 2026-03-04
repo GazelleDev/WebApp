@@ -5,8 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { usePublicContent } from "@/hooks/use-public-content";
 import {
-  modalBackdropVariant,
-  modalPanelVariant,
   motionEase,
   quickTransition,
   softSpring,
@@ -21,6 +19,46 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/gallery", label: "Gallery" },
 ];
+
+const mobileBackdropVariant = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.32,
+      ease: motionEase,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.24,
+      ease: [0.4, 0, 1, 1],
+    },
+  },
+} as const;
+
+const mobilePanelVariant = {
+  hidden: { opacity: 0, y: 18, scale: 0.992 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.44,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: 10,
+    scale: 0.996,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 1, 1],
+    },
+  },
+} as const;
 
 export function Navbar() {
   const { data } = usePublicContent();
@@ -243,15 +281,15 @@ export function Navbar() {
         </div>
       </header>
 
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} mode="wait">
         {mobileMenuOpen && (
           <>
             <motion.div
               initial="hidden"
               animate="visible"
               exit="exit"
-              variants={modalBackdropVariant}
-              className="fixed inset-0 z-40 bg-[#242327]/35 backdrop-blur-sm"
+              variants={mobileBackdropVariant}
+              className="fixed inset-0 z-30 bg-background/72 backdrop-blur-md sm:z-40"
               onClick={() => setMobileMenuOpen(false)}
             />
             <motion.div
@@ -259,91 +297,97 @@ export function Navbar() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              variants={modalPanelVariant}
-              className="fixed inset-x-4 top-24 z-50 rounded-[2rem] border border-border/70 bg-background/95 p-6 shadow-[0_32px_80px_rgba(36,35,39,0.24)] backdrop-blur-2xl sm:inset-x-6"
+              variants={mobilePanelVariant}
+              className="fixed inset-0 z-40 overflow-hidden bg-background/96 px-5 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+7rem)] backdrop-blur-xl sm:inset-x-6 sm:bottom-4 sm:top-24 sm:z-50 sm:rounded-[2rem] sm:border sm:border-border/70 sm:bg-background/95 sm:p-6 sm:shadow-[0_32px_80px_rgba(36,35,39,0.24)] sm:backdrop-blur-2xl"
             >
-              <div className="mb-8 flex items-start justify-between gap-4">
-                <div>
+              <div className="flex h-full flex-col">
+                <div className="mb-5 shrink-0">
                   <p className="text-[10px] uppercase tracking-[0.3em] text-accent">
                     Gazelle Preview
                   </p>
-                  <h2 className="mt-3 text-4xl font-display leading-none">Browse Gazelle.</h2>
+                  <h2 className="mt-3 text-[2.65rem] font-display leading-[0.92] tracking-[-0.03em]">
+                    Browse Gazelle.
+                  </h2>
+                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
+                    Move through the site sections from one clean mobile menu.
+                  </p>
                 </div>
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-card/70 text-foreground transition-colors hover:text-accent"
-                  aria-label="Close menu"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
 
-              <motion.nav
-                variants={tightStaggerContainer}
-                initial="hidden"
-                animate="visible"
-                className="flex flex-col gap-2"
-              >
-                {links.map((link) => (
-                  <motion.div key={link.href} variants={overlayCardVariant}>
+                <motion.nav
+                  variants={tightStaggerContainer}
+                  initial="hidden"
+                  animate="visible"
+                  className="flex flex-1 flex-col gap-2 overflow-y-auto pr-1"
+                >
+                  {links.map((link, index) => {
+                    const isActive = location === link.href;
+
+                    return (
+                      <motion.div key={link.href} variants={overlayCardVariant}>
+                        <Link
+                          href={link.href}
+                          className={cn(
+                            "flex items-center justify-between gap-3 rounded-[1.35rem] border px-4 py-2.5 transition-colors",
+                            isActive
+                              ? "border-accent/30 bg-accent/10 text-foreground"
+                              : "border-border/60 bg-card/50 text-foreground hover:border-accent/30 hover:text-accent",
+                          )}
+                        >
+                          <div className="min-w-0">
+                            <span className="flex items-center gap-3">
+                              <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full border border-accent/20 bg-background px-1.5 text-[10px] uppercase tracking-[0.2em] text-accent/80">
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
+                              <span className="text-[1.45rem] font-medium leading-none tracking-[-0.02em]">
+                                {link.label}
+                              </span>
+                            </span>
+                          </div>
+                          <span
+                            className={cn(
+                              "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors",
+                              isActive
+                                ? "border-accent/30 bg-background text-foreground"
+                                : "border-border/60 bg-background/80 text-muted-foreground",
+                            )}
+                          >
+                            <ArrowUpRight className="h-3.5 w-3.5" />
+                          </span>
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </motion.nav>
+
+                <motion.div
+                  variants={overlayCardVariant}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{
+                    delay: 0.16,
+                    duration: 0.58,
+                    ease: motionEase,
+                  }}
+                  className="mt-3 shrink-0 rounded-[1.5rem] border border-border/70 bg-card/70 p-3.5"
+                >
+                  <p className="text-[9px] uppercase tracking-[0.26em] text-accent">
+                    Currently
+                  </p>
+                  <div className="mt-2.5 flex items-center justify-between gap-3">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-background px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                      {statusLabel}
+                    </div>
                     <Link
-                      href={link.href}
-                      className={cn(
-                        "rounded-[1.25rem] border px-5 py-4 transition-colors",
-                        location === link.href
-                          ? "border-accent/30 bg-accent/10 text-foreground"
-                          : "border-border/60 bg-card/50 text-foreground hover:border-accent/30 hover:text-accent",
-                      )}
+                      href="/contact"
+                      className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border/70 bg-background px-3.5 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-foreground transition-colors hover:text-accent"
                     >
-                      <span className="block text-[10px] uppercase tracking-[0.28em] text-accent/80">
-                        Section
-                      </span>
-                      <span className="mt-2 block text-3xl font-display leading-none">
-                        {link.label}
-                      </span>
-                      <span className="mt-2 block text-sm text-muted-foreground">
-                        {link.href === "/"
-                          ? "Landing page and brand overview."
-                          : link.href === "/menu"
-                            ? "Offerings, categories, and pricing."
-                            : link.href === "/location"
-                              ? "Flagship status and opening context."
-                              : link.href === "/about"
-                                ? "Origins, philosophy, and intent."
-                                : "Interior imagery and atmosphere."}
-                      </span>
+                      Contact
+                      <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
-                  </motion.div>
-                ))}
-              </motion.nav>
-
-              <motion.div
-                variants={overlayCardVariant}
-                initial="hidden"
-                animate="visible"
-                transition={{
-                  delay: 0.16,
-                  duration: 0.58,
-                  ease: motionEase,
-                }}
-                className="mt-6 rounded-[1.5rem] border border-border/70 bg-card/70 p-5"
-              >
-                <p className="text-[10px] uppercase tracking-[0.28em] text-accent">Currently</p>
-                <p className="mt-3 text-base font-medium text-foreground">
-                  The site is in active design development.
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  We can keep refining the visual system, motion, and layout before the content gets
-                  locked.
-                </p>
-                <Link
-                  href="/contact"
-                  className="mt-5 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-foreground transition-colors hover:text-accent"
-                >
-                  Contact Gazelle
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </motion.div>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           </>
         )}
