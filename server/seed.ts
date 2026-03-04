@@ -1,6 +1,7 @@
 import { storage } from "./storage";
 import { db } from "./db";
 import { defaultContentDocuments, defaultMenuDocument, type ContentDocumentKey } from "@shared/content";
+import { menuCategories } from "@shared/schema";
 import { hashPassword } from "./auth";
 
 export async function seedAdminAndContent() {
@@ -28,14 +29,15 @@ export async function seedAdminAndContent() {
     }
   }
 
-  const menuDocument = await storage.getAdminMenuDocument();
-  if (!menuDocument.updatedAt) {
+  const [existingMenuCategory] = await db.select({ id: menuCategories.id }).from(menuCategories).limit(1);
+
+  if (!existingMenuCategory) {
     await storage.replaceAdminMenu(defaultMenuDocument, adminUser.id);
   }
 
   return {
     adminEmail,
     seededDocuments: documentKeys.filter((key) => !documents[key].updatedAt),
-    seededMenu: !menuDocument.updatedAt,
+    seededMenu: !existingMenuCategory,
   };
 }
