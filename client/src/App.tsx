@@ -18,6 +18,8 @@ import About from "./pages/About";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -34,6 +36,8 @@ function Router() {
   return (
     <AnimatePresence initial={false} mode="wait">
       <Switch location={location} key={location}>
+        <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin" component={AdminDashboard} />
         <Route path="/" component={Home} />
         <Route path="/menu" component={Menu} />
         <Route path="/location" component={Location} />
@@ -48,16 +52,19 @@ function Router() {
 }
 
 function App() {
+  const [location] = useLocation();
+  const isAdminRoute = location.startsWith("/admin");
+
   return (
     <MotionConfig reducedMotion="user">
       <QueryClientProvider client={queryClient}>
         <div className="flex flex-col min-h-screen">
           <ScrollToTop />
-          <Navbar />
+          {!isAdminRoute ? <Navbar /> : null}
           <main className="flex-1">
             <Router />
           </main>
-          <Footer />
+          {!isAdminRoute ? <Footer /> : null}
         </div>
         <Toaster />
       </QueryClientProvider>

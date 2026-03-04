@@ -1,6 +1,6 @@
 # Gazelle Brand Site
 
-Gazelle is a premium coffee brand concept site built with React, Vite, Express, and TypeScript. The frontend is a multi-page marketing experience; the backend currently handles contact form submissions and newsletter signups.
+Gazelle is a premium coffee brand site built with React, Vite, Express, and TypeScript. The frontend is a multi-page marketing experience, and the backend now supports both public form handling and a private owner admin for editable site content and menu management.
 
 ## Stack
 
@@ -14,6 +14,7 @@ Gazelle is a premium coffee brand concept site built with React, Vite, Express, 
 - The site can run without a database.
 - If `DATABASE_URL` is missing, the server falls back to in-memory storage.
 - Contact and newsletter submissions persist only when a Postgres database is configured.
+- The public site still renders without Postgres, but `/admin` editing requires a configured database, `SESSION_SECRET`, and a seeded owner account.
 
 ## Local Development
 
@@ -26,12 +27,45 @@ The app listens on `PORT`, which defaults to `5000`.
 
 ## Environment
 
-Copy `.env.example` to `.env` if you want persistent form storage.
+Copy `.env.example` to `.env` if you want persistence and admin editing.
 
 ```bash
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/gazelle
 PORT=5000
+ADMIN_EMAIL=owner@gazellecoffee.com
+ADMIN_PASSWORD=change-me-please
+SESSION_SECRET=replace-with-a-long-random-string
 ```
+
+## Owner Admin Setup
+
+The owner editing workflow is built into this app at `/admin`.
+
+1. Configure `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `SESSION_SECRET`.
+2. Push the schema to Postgres:
+
+```bash
+npm run db:push
+```
+
+3. Seed the initial owner account and editable content:
+
+```bash
+npm run admin:seed
+```
+
+4. Start the app and sign in at `/admin/login`.
+
+What owners can edit in phase 1:
+
+- global business details
+- homepage, about, location, gallery, contact, footer, privacy copy
+- full menu categories and items
+
+What still stays in code:
+
+- image assets
+- page layout and design structure
 
 ## Scripts
 
@@ -40,3 +74,4 @@ PORT=5000
 - `npm run build` builds the client and bundles the server
 - `npm run start` runs the production build from `dist/index.cjs`
 - `npm run db:push` pushes the schema to Postgres with Drizzle
+- `npm run admin:seed` seeds the owner account and editable content documents

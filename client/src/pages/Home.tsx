@@ -12,6 +12,7 @@ import {
   tightRevealViewport,
   tightStaggerContainer,
 } from "@/components/ui/PageTransition";
+import { usePublicContent } from "@/hooks/use-public-content";
 import { ArrowRight } from "lucide-react";
 import heroImg from "@assets/Screenshot_2026-03-02_at_12.00.23_PM_1772562150247.png";
 import signature1 from "@assets/Screenshot_2026-03-02_at_12.07.46_PM_1772562150247.png";
@@ -19,67 +20,19 @@ import signature2 from "@assets/Screenshot_2026-03-02_at_12.10.04_PM_17725621502
 import signature3 from "@assets/Screenshot_2026-03-02_at_12.05.40_PM_1772562150247.png";
 import atmosphereImg from "@assets/Screenshot_2026-03-02_at_12.05.07_PM_1772562150247.png";
 
-const signatureOfferings = [
-  {
-    title: "The Gazelle Espresso",
-    desc: "A house ritual built around dark chocolate depth, wild berry lift, and a polished finish.",
-    tag: "House Ritual",
-    img: signature1,
-  },
-  {
-    title: "Ceremonial Matcha",
-    desc: "First-harvest leaves from Uji, whisked with restraint and served with a softer, more architectural mood.",
-    tag: "Quiet Intensity",
-    img: signature2,
-  },
-  {
-    title: "Laminated Pastries",
-    desc: "Butter-forward, deeply fragrant, and designed to feel as considered as the room around them.",
-    tag: "Morning Finish",
-    img: signature3,
-  },
-];
-
-const featuredOffering = signatureOfferings[0];
-const supportingOfferings = signatureOfferings.slice(1);
-
-const studioSignals = [
-  { label: "Current Phase", value: "Brand Preview" },
-  { label: "Menu Focus", value: "Espresso, Matcha, Pastry" },
-  { label: "Opening Mode", value: "Flagship in Development" },
-];
-
-const menuDirection = [
-  {
-    title: "Espresso First",
-    desc: "The signature cup leads the tone of the whole menu: polished, dark-fruited, and restrained.",
-  },
-  {
-    title: "Matcha With Ceremony",
-    desc: "Service is meant to feel composed and architectural, not decorative for its own sake.",
-  },
-  {
-    title: "Pastry With Warmth",
-    desc: "Texture, aroma, and finish should feel as intentional as the room around them.",
-  },
-];
-
-const atmosphereTraits = [
-  {
-    title: "Architectural calm",
-    desc: "Arches, stone tones, and softened edges create a room that feels composed before a single cup is poured.",
-  },
-  {
-    title: "Slow service energy",
-    desc: "The experience is meant to feel intentional, not rushed. The pace is part of the identity.",
-  },
-  {
-    title: "Warm material palette",
-    desc: "Cream, brass, walnut, and shadow create the contrast that gives Gazelle its tone.",
-  },
-];
-
 export default function Home() {
+  const { data } = usePublicContent();
+  const content = data?.homePage;
+  const signatureOfferings = (content?.signatureOfferings ?? []).map((offering, index) => ({
+    ...offering,
+    img: [signature1, signature2, signature3][index] ?? signature1,
+  }));
+  const featuredOffering = signatureOfferings[0];
+  const supportingOfferings = signatureOfferings.slice(1);
+  const studioSignals = content?.studioSignals ?? [];
+  const menuDirection = content?.menuDirection ?? [];
+  const atmosphereTraits = content?.atmosphereTraits ?? [];
+
   return (
     <PageTransition className="bg-background">
       <section className="px-4 pb-10 pt-28 sm:px-6 lg:px-8 lg:pb-14 lg:pt-32">
@@ -99,17 +52,17 @@ export default function Home() {
                 <div className="max-w-3xl">
                   <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/35 bg-white/55 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-                    Gazelle Brand World
+                    {content?.heroEyebrow ?? "Gazelle Brand World"}
                   </div>
 
                   <h1 className="mt-8 max-w-3xl text-5xl font-display leading-[0.92] text-foreground md:text-7xl lg:text-[5.95rem]">
-                    A quieter kind
+                    {content?.heroTitle ?? "A quieter kind"}
                     <br />
-                    <span className="italic text-[#9F7965]">of coffee luxury.</span>
+                    <span className="italic text-[#9F7965]">{content?.heroAccent ?? "of coffee luxury."}</span>
                   </h1>
 
                   <p className="mt-8 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
-                    Gazelle is a hospitality concept shaped around warmth, restraint, and a strong visual identity. The space, menu, and mood are being designed as one continuous experience.
+                    {content?.heroBody ?? "Gazelle is a hospitality concept shaped around warmth, restraint, and a strong visual identity. The space, menu, and mood are being designed as one continuous experience."}
                   </p>
 
                   <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
@@ -117,13 +70,13 @@ export default function Home() {
                       href="/menu"
                       className="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background transition-colors hover:bg-foreground/90"
                     >
-                      Explore Menu
+                      {content?.primaryCtaLabel ?? "Explore Menu"}
                     </Link>
                     <Link
                       href="/about"
                       className="inline-flex items-center justify-center gap-2 rounded-full border border-accent/60 bg-white/45 px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-foreground transition-colors hover:border-[#9F7965] hover:text-[#9F7965]"
                     >
-                      Read the Story
+                      {content?.secondaryCtaLabel ?? "Read the Story"}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
@@ -173,7 +126,7 @@ export default function Home() {
 
               <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#242327]/26 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-white/78 backdrop-blur-md">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-                Spatial Preview
+                {content?.heroVisualEyebrow ?? "Spatial Preview"}
               </div>
 
               <motion.div
@@ -190,10 +143,10 @@ export default function Home() {
                   />
                 </div>
                 <p className="mt-4 text-[10px] uppercase tracking-[0.26em] text-white/50">
-                  Featured Ritual
+                  {content?.heroFeaturedEyebrow ?? "Featured Ritual"}
                 </p>
                 <p className="mt-2 text-lg font-display text-white">
-                  Matcha, plated with quiet drama.
+                  {content?.heroFeaturedTitle ?? "Matcha, plated with quiet drama."}
                 </p>
               </motion.div>
 
@@ -205,10 +158,10 @@ export default function Home() {
                   className="rounded-[2.15rem] border border-white/10 bg-[#242327]/30 p-6 backdrop-blur-md"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
-                    Interior Direction
+                    {content?.heroInteriorEyebrow ?? "Interior Direction"}
                   </p>
                   <p className="mt-3 max-w-md text-[1.95rem] font-display leading-[1.02] text-white md:text-[2.35rem]">
-                    Curves, stone tones, and softened light shape the mood before the first sip.
+                    {content?.heroInteriorTitle ?? "Curves, stone tones, and softened light shape the mood before the first sip."}
                   </p>
                 </motion.div>
 
@@ -219,16 +172,16 @@ export default function Home() {
                   className="rounded-[2.15rem] border border-white/10 bg-[#C0987E] p-6 text-[#242327]"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-[#242327]/65">
-                    Flagship Note
+                    {content?.heroFlagshipEyebrow ?? "Flagship Note"}
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-[#242327]/82">
-                    The physical location is still being finalized, but the world it belongs to is already taking shape.
+                    {content?.heroFlagshipBody ?? "The physical location is still being finalized, but the world it belongs to is already taking shape."}
                   </p>
                   <Link
                     href="/location"
                     className="mt-5 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-[#242327] transition-colors hover:text-[#9F7965]"
                   >
-                    View Location Preview
+                    {content?.flagshipCtaLabel ?? "See the Preview"}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </motion.div>
@@ -250,13 +203,13 @@ export default function Home() {
             >
               <div>
                 <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
-                  Signature Offerings
+                  {content?.signatureIntroEyebrow ?? "Signature Offerings"}
                 </p>
                 <h2 className="mt-5 max-w-md text-4xl font-display leading-tight text-foreground md:text-5xl">
-                  The menu is being shaped like the room itself.
+                  {content?.signatureIntroTitle ?? "The menu is being shaped like the room itself."}
                 </h2>
                 <p className="mt-6 max-w-md text-lg font-light leading-relaxed text-muted-foreground">
-                  Nothing in Gazelle is meant to feel generic. Each core offering supports the atmosphere rather than competing with it.
+                  {content?.signatureIntroBody ?? "Nothing in Gazelle is meant to feel generic. Each core offering supports the atmosphere rather than competing with it."}
                 </p>
               </div>
 
@@ -290,7 +243,7 @@ export default function Home() {
                 href="/menu"
                 className="mt-10 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-foreground transition-colors hover:text-accent"
               >
-                See the full menu
+                {content?.menuDirectionCtaLabel ?? "See the full menu"}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>
@@ -328,10 +281,10 @@ export default function Home() {
 
                   <div className="mt-6 rounded-[1.6rem] border border-white/45 bg-white/45 px-4 py-4">
                     <p className="text-[10px] uppercase tracking-[0.26em] text-[#9F7965]">
-                      Signature Position
+                      {content?.signaturePositionEyebrow ?? "Signature Position"}
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-foreground">
-                      A concentrated house cup designed to anchor the tone of the full menu.
+                      {content?.signaturePositionBody ?? featuredOffering?.note ?? "A concentrated house cup designed to anchor the tone of the full menu."}
                     </p>
                   </div>
                 </div>
@@ -370,11 +323,11 @@ export default function Home() {
                           </p>
                         </div>
 
-                        <p className={`mt-5 text-[10px] uppercase tracking-[0.24em] ${index === 0 ? "text-white/45" : "text-[#9F7965]"}`}>
-                          {index === 0 ? "Tea service in development" : "Morning pastry study"}
-                        </p>
+                          <p className={`mt-5 text-[10px] uppercase tracking-[0.24em] ${index === 0 ? "text-white/45" : "text-[#9F7965]"}`}>
+                            {item.note}
+                          </p>
+                        </div>
                       </div>
-                    </div>
                   </motion.article>
                 ))}
               </div>
@@ -404,10 +357,10 @@ export default function Home() {
                 </div>
                 <div className="rounded-[1.7rem] border border-white/10 bg-[#242327]/22 p-5 backdrop-blur-md">
                   <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
-                    Spatial Mood
+                    {content?.atmosphereImageEyebrow ?? "Spatial Mood"}
                   </p>
                   <p className="mt-3 text-xl font-display leading-tight text-white">
-                    Every surface is meant to support a slower emotional tempo.
+                    {content?.atmosphereImageTitle ?? "Every surface is meant to support a slower emotional tempo."}
                   </p>
                 </div>
               </div>
@@ -422,13 +375,13 @@ export default function Home() {
             >
               <div>
                 <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
-                  The Atmosphere
+                  {content?.atmosphereEyebrow ?? "The Atmosphere"}
                 </p>
                 <h2 className="mt-5 text-4xl font-display leading-tight text-foreground md:text-5xl">
-                  Designed for pause, not noise.
+                  {content?.atmosphereTitle ?? "Designed for pause, not noise."}
                 </h2>
                 <p className="mt-6 text-lg font-light leading-relaxed text-muted-foreground">
-                  Gazelle is being built as a place where architecture, menu, and pacing all reinforce the same quiet confidence.
+                  {content?.atmosphereBody ?? "Gazelle is being built as a place where architecture, menu, and pacing all reinforce the same quiet confidence."}
                 </p>
               </div>
 
@@ -449,7 +402,7 @@ export default function Home() {
                 href="/about"
                 className="mt-9 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-foreground transition-colors hover:text-accent"
               >
-                Read our story
+                {content?.atmosphereCtaLabel ?? "Read our story"}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>
@@ -465,14 +418,14 @@ export default function Home() {
             viewport={revealViewport}
             variants={fadeUpVariant}
           >
-            <h2 className="mb-8 text-5xl font-display md:text-6xl">Flagship Update</h2>
+            <h2 className="mb-8 text-5xl font-display md:text-6xl">{content?.flagshipTitle ?? "Flagship Update"}</h2>
             <p className="mx-auto mb-12 max-w-xl text-xl font-light text-muted-foreground">
-              Gazelle&apos;s first physical location is still being finalized. Join the list for launch timing, preview events, and opening details.
+              {content?.flagshipBody ?? "Gazelle's first physical location is still being finalized. Join the list for launch timing, preview events, and opening details."}
             </p>
             <div className="inline-block rounded-full bg-border/40 p-1">
               <div className="flex items-center justify-center gap-4 rounded-full border border-border/50 bg-background px-8 py-4 shadow-sm">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-                <span className="font-medium">Location details coming soon</span>
+                <span className="font-medium">{content?.flagshipStatusLabel ?? "Location details coming soon"}</span>
               </div>
             </div>
             <div className="mt-12">
@@ -480,7 +433,7 @@ export default function Home() {
                 href="/location"
                 className="inline-flex items-center justify-center rounded-sm bg-foreground px-8 py-4 text-sm uppercase tracking-widest text-background transition-all hover:bg-foreground/90"
               >
-                See the Preview
+                {content?.flagshipCtaLabel ?? "See the Preview"}
               </Link>
             </div>
           </motion.div>

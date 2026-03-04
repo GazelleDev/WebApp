@@ -65,7 +65,7 @@ app.use((req, res, next) => {
 
   if (storageMode === "memory") {
     log(
-      "DATABASE_URL is not set. Using in-memory storage; contact and newsletter submissions will not persist.",
+      "DATABASE_URL is not set. Using in-memory storage; public content falls back to defaults, form submissions will not persist, and /admin editing is disabled.",
       "storage",
     );
   }

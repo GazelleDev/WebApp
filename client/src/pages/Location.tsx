@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Clock3, Mail, MapPin, Navigation, Phone } from "lucide-react";
+import { usePublicContent } from "@/hooks/use-public-content";
 import {
   PageTransition,
   fadeUpVariant,
@@ -7,31 +8,26 @@ import {
   heroVisualVariant,
 } from "@/components/ui/PageTransition";
 
-const addressLines = [
-  "1240 Heritage Avenue",
-  "Suite 101",
-  "Metropolis, NY 10012",
-];
-
-const parkingNotes = [
-  "Street parking available on Heritage Ave.",
-  "Complimentary 1-hour parking in the rear lot for guests.",
-];
-
-const hours = [
-  { days: "Monday - Friday", time: "7:00 AM - 6:00 PM" },
-  { days: "Saturday", time: "8:00 AM - 6:00 PM" },
-  { days: "Sunday", time: "8:00 AM - 4:00 PM" },
-];
-
-const phoneNumber = "(555) 123-4567";
-const emailAddress = "hello@gazellecoffee.com";
-const mapAddress = addressLines.join(", ");
-const mapQuery = encodeURIComponent(mapAddress);
-const mapHref = `https://maps.google.com/?q=${mapQuery}`;
-const mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
-
 export default function Location() {
+  const { data } = usePublicContent();
+  const content = data?.locationPage;
+  const siteSettings = data?.siteSettings;
+  const addressLines = siteSettings?.addressLines ?? ["1240 Heritage Avenue", "Suite 101", "Metropolis, NY 10012"];
+  const parkingNotes = siteSettings?.parkingNotes ?? [
+    "Street parking available on Heritage Ave.",
+    "Complimentary 1-hour parking in the rear lot for guests.",
+  ];
+  const hours = siteSettings?.hours ?? [
+    { days: "Monday - Friday", time: "7:00 AM - 6:00 PM" },
+    { days: "Saturday", time: "8:00 AM - 6:00 PM" },
+    { days: "Sunday", time: "8:00 AM - 4:00 PM" },
+  ];
+  const phoneNumber = siteSettings?.phone ?? "(555) 123-4567";
+  const emailAddress = siteSettings?.generalEmail ?? "hello@gazellecoffee.com";
+  const mapQuery = encodeURIComponent(siteSettings?.locationMapQuery ?? addressLines.join(", "));
+  const mapHref = `https://maps.google.com/?q=${mapQuery}`;
+  const mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
+
   return (
     <PageTransition className="min-h-screen bg-background pb-24 pt-32">
       <div className="px-4 sm:px-6 lg:px-8">
@@ -44,15 +40,15 @@ export default function Location() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/28 bg-white/45 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-              Visit Gazelle
+              {content?.heroEyebrow ?? "Visit Gazelle"}
             </div>
             <h1 className="mt-7 text-5xl font-display leading-[0.94] text-foreground md:text-7xl">
-              Location details
+              {content?.heroTitle ?? "Location details"}
               <br />
-              <span className="italic text-[#9F7965]">for layout review.</span>
+              <span className="italic text-[#9F7965]">{content?.heroAccent ?? "for layout review."}</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
-              The page below uses placeholder address and service information so the location experience can be designed with complete content.
+              {content?.heroBody ?? "The page below uses placeholder address and service information so the location experience can be designed with complete content."}
             </p>
           </motion.div>
 
@@ -67,7 +63,7 @@ export default function Location() {
                 <section>
                   <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
                     <MapPin className="h-5 w-5" />
-                    <span>Location</span>
+                    <span>{content?.locationLabel ?? "Location"}</span>
                   </div>
 
                   <div className="mt-8 space-y-2">
@@ -84,7 +80,7 @@ export default function Location() {
 
                   <div className="mt-8 rounded-[1.7rem] border border-white/45 bg-white/42 p-5">
                     <p className="text-[1.05rem] font-semibold text-foreground">
-                      Parking Notes:
+                      {content?.parkingLabel ?? "Parking Notes"}:
                     </p>
                     <div className="mt-3 space-y-1 text-[1.05rem] leading-relaxed text-muted-foreground">
                       {parkingNotes.map((note) => (
@@ -99,7 +95,7 @@ export default function Location() {
                 <section>
                   <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
                     <Clock3 className="h-5 w-5" />
-                    <span>Hours</span>
+                    <span>{content?.hoursLabel ?? "Hours"}</span>
                   </div>
 
                   <div className="mt-8 space-y-6">
@@ -121,7 +117,7 @@ export default function Location() {
                 <section>
                   <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
                     <Phone className="h-5 w-5" />
-                    <span>Contact</span>
+                    <span>{content?.contactLabel ?? "Contact"}</span>
                   </div>
 
                   <div className="mt-8 space-y-5">
@@ -166,7 +162,7 @@ export default function Location() {
 
               <div className="absolute right-6 top-6 inline-flex items-center gap-2 rounded-full border border-[#242327]/12 bg-[#242327] px-4 py-2 text-[10px] uppercase tracking-[0.24em] text-[#f4ece6] shadow-[0_12px_28px_rgba(36,35,39,0.22)] backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-                Map Preview
+                {content?.mapPreviewLabel ?? "Map Preview"}
               </div>
 
               <div className="absolute inset-x-6 bottom-8 flex justify-center">
@@ -177,7 +173,7 @@ export default function Location() {
                   className="inline-flex items-center gap-3 rounded-full border border-[#242327]/12 bg-[#242327] px-8 py-4 text-sm uppercase tracking-[0.18em] text-[#f4ece6] shadow-[0_14px_32px_rgba(36,35,39,0.22)] backdrop-blur-sm transition-colors hover:border-[#C0987E] hover:text-[#C0987E]"
                 >
                   <Navigation className="h-5 w-5 text-[#C0987E]" />
-                  Open in Maps
+                  {content?.mapButtonLabel ?? "Open in Maps"}
                 </a>
               </div>
             </motion.div>

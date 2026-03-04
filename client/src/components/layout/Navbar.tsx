@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { usePublicContent } from "@/hooks/use-public-content";
 import {
   modalBackdropVariant,
   modalPanelVariant,
@@ -22,10 +23,13 @@ const links = [
 ];
 
 export function Navbar() {
+  const { data } = usePublicContent();
   const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isOverlay = location === "/" && !isScrolled && !mobileMenuOpen;
+  const storeName = data?.siteSettings.storeName ?? "Gazelle";
+  const statusLabel = data?.siteSettings.navbarStatusLabel ?? "In Development";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,7 +77,7 @@ export function Navbar() {
             <div className="flex items-center justify-between gap-3">
               <Link href="/" className="group flex min-w-0 items-center">
                 <span className="min-w-0 truncate font-brand text-[1.7rem] leading-none text-[#C0987E]">
-                  Gazelle.
+                  {storeName}.
                 </span>
               </Link>
 
@@ -130,7 +134,7 @@ export function Navbar() {
                   )}
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  In Development
+                  {statusLabel}
                 </div>
 
                 <Link

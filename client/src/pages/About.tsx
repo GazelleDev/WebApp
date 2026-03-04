@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { usePublicContent } from "@/hooks/use-public-content";
 import {
   PageTransition,
   createRevealVariant,
@@ -16,40 +17,12 @@ import {
 import storyImgOne from "@assets/Screenshot_2026-03-02_at_12.08.31_PM_1772562150247.png";
 import storyImgTwo from "@assets/Screenshot_2026-03-02_at_12.09.38_PM_1772562150247.png";
 
-const principles = [
-  {
-    label: "01",
-    title: "Quiet hospitality",
-    desc: "Gazelle is being shaped around a slower emotional tempo. Service, sound, and pacing should feel composed rather than performative.",
-  },
-  {
-    label: "02",
-    title: "Architectural warmth",
-    desc: "Curves, stone tones, softened edges, and material contrast are part of the identity, not a backdrop added after the fact.",
-  },
-  {
-    label: "03",
-    title: "Menu restraint",
-    desc: "The menu is meant to feel focused and deliberate. Fewer things, done with clarity, gives the brand a stronger point of view.",
-  },
-];
-
-const storyBlocks = [
-  {
-    title: "Brand before launch",
-    desc: "Gazelle is still in development, so this page is not a founder myth or a completed company history. It is a clear statement of intent for what the brand is trying to become.",
-  },
-  {
-    title: "Experience as one system",
-    desc: "The room, the menu, the pacing, and the visual identity are being designed together. The goal is not to make separate things look coordinated, but to make them feel inseparable.",
-  },
-  {
-    title: "Built for a certain mood",
-    desc: "Warmth, restraint, and confidence are the qualities driving the project. Gazelle should feel memorable because it is considered, not because it is loud.",
-  },
-];
-
 export default function About() {
+  const { data } = usePublicContent();
+  const content = data?.aboutPage;
+  const storyBlocks = content?.storyBlocks ?? [];
+  const principles = content?.principles ?? [];
+
   return (
     <PageTransition className="min-h-screen bg-background pb-24 pt-32">
       <div className="px-4 sm:px-6 lg:px-8">
@@ -69,21 +42,21 @@ export default function About() {
                 <div className="max-w-3xl">
                   <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/35 bg-white/55 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-                    Brand Intent
+                    {content?.heroEyebrow ?? "Brand Intent"}
                   </div>
 
                   <h1 className="mt-8 max-w-3xl text-5xl font-display leading-[0.92] text-foreground md:text-7xl lg:text-[5.7rem]">
-                    A brand being shaped
+                    {content?.heroTitle ?? "A brand being shaped"}
                     <br />
-                    <span className="italic text-[#9F7965]">with restraint.</span>
+                    <span className="italic text-[#9F7965]">{content?.heroAccent ?? "with restraint."}</span>
                   </h1>
 
                   <p className="mt-8 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
-                    Gazelle began as a desire to build a coffee experience that feels warmer, slower, and more architecturally composed than the usual cafe formula.
+                    {content?.heroBody ?? "Gazelle began as a desire to build a coffee experience that feels warmer, slower, and more architecturally composed than the usual cafe formula."}
                   </p>
 
                   <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                    This is still a brand in development. What you see here is the philosophy, visual language, and emotional direction that will shape the final physical experience.
+                    {content?.heroSecondaryBody ?? "This is still a brand in development. What you see here is the philosophy, visual language, and emotional direction that will shape the final physical experience."}
                   </p>
 
                   <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
@@ -91,13 +64,13 @@ export default function About() {
                       href="/gallery"
                       className="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background transition-colors hover:bg-foreground/90"
                     >
-                      View Atmosphere
+                      {content?.primaryCtaLabel ?? "View Atmosphere"}
                     </Link>
                     <Link
                       href="/menu"
                       className="inline-flex items-center justify-center gap-2 rounded-full border border-accent/60 bg-white/45 px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-foreground transition-colors hover:border-[#9F7965] hover:text-[#9F7965]"
                     >
-                      See Menu Direction
+                      {content?.secondaryCtaLabel ?? "See Menu Direction"}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
@@ -143,15 +116,15 @@ export default function About() {
 
                 <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#242327]/28 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-white/78 backdrop-blur-md">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-                  Spatial Language
+                  {content?.spatialEyebrow ?? "Spatial Language"}
                 </div>
 
                 <div className="absolute bottom-5 left-5 right-5 rounded-[2rem] border border-white/10 bg-[#242327]/30 p-6 backdrop-blur-md">
                   <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
-                    Design Direction
+                    {content?.designEyebrow ?? "Design Direction"}
                   </p>
                   <p className="mt-3 max-w-lg text-[1.9rem] font-display leading-[1.02] text-white md:text-[2.2rem]">
-                    Gazelle is meant to feel intimate, composed, and quietly cinematic.
+                    {content?.designTitle ?? "Gazelle is meant to feel intimate, composed, and quietly cinematic."}
                   </p>
                 </div>
               </div>
@@ -173,10 +146,10 @@ export default function About() {
                   <div className="relative flex h-full min-h-[18rem] items-end rounded-[1.8rem] border border-white/10 bg-[#242327]/18 p-5 backdrop-blur-sm">
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
-                        Entry Mood
+                        {content?.entryEyebrow ?? "Entry Mood"}
                       </p>
                       <p className="mt-2 text-lg font-display text-white">
-                        Soft thresholds, arches, and a calmer visual tempo.
+                        {content?.entryTitle ?? "Soft thresholds, arches, and a calmer visual tempo."}
                       </p>
                     </div>
                   </div>
@@ -190,22 +163,20 @@ export default function About() {
                   className="rounded-[2.4rem] border border-border/70 bg-card/70 p-7 shadow-[0_20px_60px_rgba(36,35,39,0.08)]"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
-                    Why It Exists
+                    {content?.whyEyebrow ?? "Why It Exists"}
                   </p>
                   <h2 className="mt-4 text-[2.35rem] font-display leading-none text-foreground">
-                    Not louder.
-                    <br />
-                    More deliberate.
+                    {content?.whyTitle ?? "Not louder. More deliberate."}
                   </h2>
                   <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                    Gazelle is being designed for people who want atmosphere, service, and menu choices to feel connected. The identity works only if those parts reinforce one another.
+                    {content?.whyBody ?? "Gazelle is being designed for people who want atmosphere, service, and menu choices to feel connected. The identity works only if those parts reinforce one another."}
                   </p>
                   <div className="mt-8 rounded-[1.6rem] border border-white/45 bg-white/45 px-5 py-5">
                     <p className="text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
-                      Current State
+                      {content?.currentStateEyebrow ?? "Current State"}
                     </p>
                     <p className="mt-3 text-sm leading-relaxed text-foreground/86">
-                      A clear visual and experiential direction is in place. The goal now is refinement, not invention from scratch.
+                      {content?.currentStateBody ?? "A clear visual and experiential direction is in place. The goal now is refinement, not invention from scratch."}
                     </p>
                   </div>
                 </motion.div>
@@ -224,19 +195,19 @@ export default function About() {
               className="rounded-[2.75rem] border border-border/70 bg-background/92 p-7 shadow-[0_22px_60px_rgba(36,35,39,0.07)] sm:p-8 lg:p-10"
             >
               <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
-                What Guides It
+                {content?.principlesEyebrow ?? "What Guides It"}
               </p>
               <h2 className="mt-5 max-w-md text-4xl font-display leading-tight text-foreground md:text-5xl">
-                Three principles shape the whole project.
+                {content?.principlesTitle ?? "Three principles shape the whole project."}
               </h2>
               <p className="mt-6 max-w-md text-lg font-light leading-relaxed text-muted-foreground">
-                The visual identity is only useful if it helps define how Gazelle should feel. These principles are the filter for every design decision.
+                {content?.principlesBody ?? "The visual identity is only useful if it helps define how Gazelle should feel. These principles are the filter for every design decision."}
               </p>
               <Link
                 href="/contact"
                 className="mt-10 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-foreground transition-colors hover:text-accent"
               >
-                Talk to Gazelle
+                {content?.principlesCtaLabel ?? "Talk to Gazelle"}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>

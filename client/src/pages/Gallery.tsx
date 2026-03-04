@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
+import { usePublicContent } from "@/hooks/use-public-content";
 import {
   PageTransition,
   createRevealVariant,
@@ -37,93 +38,29 @@ type GalleryImage = {
   layout: string;
 };
 
-const gallerySignals = [
-  { label: "Render Count", value: "11 spatial studies" },
-  { label: "Tone", value: "Warm, restrained, cinematic" },
-  { label: "Focus", value: "Arches, light, material calm" },
-];
-
-const galleryImages: GalleryImage[] = [
-  {
-    src: img1,
-    alt: "Gazelle Interior - Main Dining Area",
-    title: "Main dining room",
-    note: "Long sightlines and softened light establish the room before any service moment begins.",
-    layout: "md:col-span-2 xl:col-span-2 xl:row-span-2",
-  },
-  {
-    src: img2,
-    alt: "Gazelle Interior - Counter and Arched Feature",
-    title: "Counter study",
-    note: "Service architecture is treated as part of the identity, not just back-of-house function.",
-    layout: "",
-  },
-  {
-    src: img3,
-    alt: "Gazelle Interior - Seating and Lighting",
-    title: "Light and seating",
-    note: "The room is meant to feel calm even when it is fully occupied.",
-    layout: "",
-  },
-  {
-    src: img4,
-    alt: "Gazelle Interior - Marble Counter Detail",
-    title: "Material detail",
-    note: "Stone, edge softness, and warm contrast give the space its tactile rhythm.",
-    layout: "",
-  },
-  {
-    src: img5,
-    alt: "Gazelle Interior - Arched Logo Wall",
-    title: "Brand wall",
-    note: "Identity marks are integrated into the space rather than applied on top of it.",
-    layout: "xl:row-span-2",
-  },
-  {
-    src: img6,
-    alt: "Gazelle Interior - Dining Perspective",
-    title: "Dining perspective",
-    note: "A quieter cafe experience depends on spatial pacing as much as menu design.",
-    layout: "md:col-span-2 xl:col-span-2",
-  },
-  {
-    src: img7,
-    alt: "Gazelle Interior - Modern Ceiling Lighting",
-    title: "Ceiling rhythm",
-    note: "Lighting works here as atmosphere, not visual spectacle.",
-    layout: "",
-  },
-  {
-    src: img8,
-    alt: "Gazelle Interior - Window View and Seating",
-    title: "Window edge",
-    note: "Perimeter seating is part of the emotional tempo of the room.",
-    layout: "",
-  },
-  {
-    src: img9,
-    alt: "Gazelle Interior - Entry and Accessibility Ramp",
-    title: "Arrival sequence",
-    note: "The threshold into Gazelle should feel softened, deliberate, and memorable.",
-    layout: "",
-  },
-  {
-    src: img10,
-    alt: "Gazelle Interior - Service Station Detail",
-    title: "Service station",
-    note: "Operational moments are still designed to feel aligned with the larger mood.",
-    layout: "md:col-span-2 xl:col-span-2",
-  },
-  {
-    src: img11,
-    alt: "Gazelle Interior - Architectural Arches",
-    title: "Architectural repeat",
-    note: "Repeated curves create the calm visual language running through the whole brand world.",
-    layout: "",
-  },
-];
-
 export default function Gallery() {
+  const { data } = usePublicContent();
+  const content = data?.galleryPage;
+  const gallerySignals = content?.gallerySignals ?? [];
+  const galleryImages: GalleryImage[] = (content?.frames ?? []).map((frame, index) => ({
+    src: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11][index] ?? img1,
+    alt: frame.title,
+    title: frame.title,
+    note: frame.note,
+    layout: [
+      "md:col-span-2 xl:col-span-2 xl:row-span-2",
+      "",
+      "",
+      "",
+      "xl:row-span-2",
+      "md:col-span-2 xl:col-span-2",
+      "",
+      "",
+      "",
+      "md:col-span-2 xl:col-span-2",
+      "",
+    ][index] ?? "",
+  }));
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   return (
@@ -145,17 +82,17 @@ export default function Gallery() {
                 <div className="max-w-3xl">
                   <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/35 bg-white/55 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-                    Atmosphere Gallery
+                    {content?.heroEyebrow ?? "Atmosphere Gallery"}
                   </div>
 
                   <h1 className="mt-8 max-w-3xl text-5xl font-display leading-[0.92] text-foreground md:text-7xl lg:text-[5.6rem]">
-                    Spatial studies
+                    {content?.heroTitle ?? "Spatial studies"}
                     <br />
-                    <span className="italic text-[#9F7965]">for Gazelle.</span>
+                    <span className="italic text-[#9F7965]">{content?.heroAccent ?? "for Gazelle."}</span>
                   </h1>
 
                   <p className="mt-8 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
-                    A quieter read of the Gazelle world through light, material, and spatial rhythm.
+                    {content?.heroBody ?? "A quieter read of the Gazelle world through light, material, and spatial rhythm."}
                   </p>
 
                   <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
@@ -163,7 +100,7 @@ export default function Gallery() {
                       href="/location"
                       className="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background transition-colors hover:bg-foreground/90"
                     >
-                      See the Location
+                      {content?.primaryCtaLabel ?? "See the Location"}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
@@ -208,7 +145,7 @@ export default function Gallery() {
 
               <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#242327]/28 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-white/78 backdrop-blur-md">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
-                Featured Frame
+                {content?.featuredFrameLabel ?? "Featured Frame"}
               </div>
 
               <motion.div
@@ -225,7 +162,7 @@ export default function Gallery() {
                   />
                 </div>
                 <p className="mt-3 text-[10px] uppercase tracking-[0.26em] text-white/50">
-                  Service Detail
+                  {content?.serviceDetailLabel ?? "Service Detail"}
                 </p>
               </motion.div>
 
@@ -237,10 +174,10 @@ export default function Gallery() {
                   className="rounded-[2.15rem] border border-white/10 bg-[#242327]/30 p-6 backdrop-blur-md"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
-                    Visual Tone
+                    {content?.visualToneLabel ?? "Visual Tone"}
                   </p>
                   <p className="mt-3 max-w-md text-[1.8rem] font-display leading-[1.02] text-white md:text-[2.1rem]">
-                    Quiet, tactile, and cinematic.
+                    {content?.visualToneTitle ?? "Quiet, tactile, and cinematic."}
                   </p>
                 </motion.div>
 
@@ -253,7 +190,7 @@ export default function Gallery() {
                   className="rounded-[2.15rem] border border-white/10 bg-[#C0987E] p-6 text-left text-[#242327] transition-colors hover:bg-[#9F7965] hover:text-[#f4ece6]"
                 >
                   <p className="text-[10px] uppercase tracking-[0.28em] text-current/70">
-                    Open Frame
+                    {content?.openFrameLabel ?? "Open Frame"}
                   </p>
                 </motion.button>
               </div>
@@ -270,7 +207,7 @@ export default function Gallery() {
             className="mb-8"
           >
             <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
-              Curated Frames
+              {content?.curatedFramesLabel ?? "Curated Frames"}
             </p>
           </motion.div>
 
@@ -345,7 +282,7 @@ export default function Gallery() {
 
                 <div className="pointer-events-none absolute inset-x-6 bottom-6 rounded-[1.8rem] border border-white/10 bg-[#242327]/58 p-5 text-[#f4ece6] backdrop-blur-md md:max-w-[26rem]">
                   <p className="text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
-                    Expanded Frame
+                    {content?.expandedFrameLabel ?? "Expanded Frame"}
                   </p>
                   <h3 className="mt-3 text-[1.8rem] font-display leading-none text-white">
                     {selectedImage.title}
