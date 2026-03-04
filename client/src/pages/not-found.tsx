@@ -5,7 +5,7 @@ import { PageTransition, fadeUpVariant } from "@/components/ui/PageTransition";
 
 export default function NotFound() {
   return (
-    <PageTransition className="min-h-screen bg-background px-6 pb-24 pt-32">
+    <PageTransition className="min-h-dvh bg-background px-6 pb-24 pt-32">
       <motion.div
         initial="hidden"
         animate="visible"

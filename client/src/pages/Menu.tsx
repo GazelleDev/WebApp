@@ -19,7 +19,7 @@ export default function Menu() {
   const dietaryNotes = menuPage?.dietaryNotes ?? [];
 
   return (
-    <PageTransition className="min-h-screen bg-background px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+    <PageTransition className="min-h-dvh bg-background px-4 pb-24 pt-32 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[92rem]">
         <motion.div
           initial="hidden"

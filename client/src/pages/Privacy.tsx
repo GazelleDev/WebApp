@@ -7,7 +7,7 @@ export default function Privacy() {
   const content = data?.privacyPage;
 
   return (
-    <PageTransition className="pt-32 pb-24 bg-background min-h-screen">
+    <PageTransition className="min-h-dvh bg-background pb-24 pt-32">
       <div className="max-w-3xl mx-auto px-6 md:px-12">
         <motion.div 
           initial="hidden"

@@ -18,31 +18,31 @@
     --background: 26 39% 93%;
     /* Brand dark #242327 */
     --foreground: 255 5% 15%;
-    
+
     /* Soft surface aligned with the beige palette */
     --card: 23 37% 86%;
     --card-foreground: 255 5% 15%;
-    
+
     --popover: 26 39% 93%;
     --popover-foreground: 255 5% 15%;
-    
+
     --primary: 255 5% 15%;
     --primary-foreground: 26 39% 93%;
-    
+
     --secondary: 24 30% 88%;
     --secondary-foreground: 255 5% 15%;
-    
+
     --muted: 24 32% 89%;
     /* Darker beige #9F7965 */
     --muted-foreground: 21 23% 51%;
-    
+
     /* Lighter beige #C0987E */
     --accent: 24 34% 62%;
     --accent-foreground: 255 5% 15%;
 
     /* Arched Motifs */
     --radius-arch: 100px 100px 0 0;
-    
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
@@ -57,9 +57,26 @@
     @apply border-border;
   }
 
+  /* FIX: allow content to visually extend under iOS status bar/safe areas */
+  html {
+    background-color: transparent;
+  }
+
+  /* FIX: remove body background so safe-area doesn't stay solid */
   body {
-    @apply bg-background text-foreground antialiased;
+    background-color: transparent;
+    @apply text-foreground antialiased;
     font-family: var(--font-body);
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* FIX: move the background to the scrolling app container */
+  #root {
+    min-height: 100dvh;
+    background-color: transparent;
+    padding-top: env(safe-area-inset-top);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -76,7 +93,7 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .glass-nav {
     @apply bg-background/80 backdrop-blur-md border-b border-border/50;
   }
