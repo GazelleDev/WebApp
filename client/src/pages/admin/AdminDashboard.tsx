@@ -577,14 +577,6 @@ export default function AdminDashboard() {
                   <AdminField label="Hero Visual Eyebrow">
                     <AdminInput value={value.heroVisualEyebrow} onChange={(event) => setValue((current) => ({ ...current, heroVisualEyebrow: event.target.value }))} />
                   </AdminField>
-                  <AdminField label="Featured Card Eyebrow">
-                    <AdminInput value={value.heroFeaturedEyebrow} onChange={(event) => setValue((current) => ({ ...current, heroFeaturedEyebrow: event.target.value }))} />
-                  </AdminField>
-                </AdminGrid>
-                <AdminGrid>
-                  <AdminField label="Featured Card Title">
-                    <AdminInput value={value.heroFeaturedTitle} onChange={(event) => setValue((current) => ({ ...current, heroFeaturedTitle: event.target.value }))} />
-                  </AdminField>
                   <AdminField label="Interior Eyebrow">
                     <AdminInput value={value.heroInteriorEyebrow} onChange={(event) => setValue((current) => ({ ...current, heroInteriorEyebrow: event.target.value }))} />
                   </AdminField>
