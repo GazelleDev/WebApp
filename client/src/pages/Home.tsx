@@ -129,27 +129,6 @@ export default function Home() {
                 {content?.heroVisualEyebrow ?? "Spatial Preview"}
               </div>
 
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={createRevealVariant({ axis: "x", distance: 18, delay: 0.28, duration: 0.62, scale: 0.98 })}
-                className="absolute right-5 top-5 hidden w-[14.5rem] rounded-[2rem] border border-white/10 bg-[#242327]/34 p-4 backdrop-blur-md xl:block"
-              >
-                <div className="overflow-hidden rounded-[1.4rem]">
-                  <img
-                    src={signature2}
-                    alt="Ceremonial matcha service"
-                    className="aspect-[4/5] w-full object-cover"
-                  />
-                </div>
-                <p className="mt-4 text-[10px] uppercase tracking-[0.26em] text-white/50">
-                  {content?.heroFeaturedEyebrow ?? "Featured Ritual"}
-                </p>
-                <p className="mt-2 text-lg font-display text-white">
-                  {content?.heroFeaturedTitle ?? "Matcha, plated with quiet drama."}
-                </p>
-              </motion.div>
-
               <div className="absolute inset-x-5 bottom-5 grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
                 <motion.div
                   initial="hidden"

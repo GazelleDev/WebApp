@@ -58,7 +58,7 @@ function App() {
   return (
     <MotionConfig reducedMotion="user">
       <QueryClientProvider client={queryClient}>
-        <div className="flex flex-col min-h-screen">
+        <div className="flex min-h-dvh flex-col bg-background">
           <ScrollToTop />
           {!isAdminRoute ? <Navbar /> : null}
           <main className="flex-1">
