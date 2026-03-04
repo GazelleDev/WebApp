@@ -228,7 +228,7 @@ export function Navbar() {
               animate="visible"
               exit="exit"
               variants={mobilePanelVariant}
-              className="fixed inset-0 z-40 overflow-hidden bg-background/96 px-5 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+1rem)] backdrop-blur-xl sm:inset-x-6 sm:bottom-4 sm:top-24 sm:z-50 sm:rounded-[2rem] sm:border sm:border-border/70 sm:bg-background/95 sm:p-6 sm:shadow-[0_32px_80px_rgba(36,35,39,0.24)] sm:backdrop-blur-2xl"
+              className="fixed inset-0 z-40 overflow-hidden bg-background/96 px-5 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+7rem)] backdrop-blur-xl sm:inset-x-6 sm:bottom-4 sm:top-24 sm:z-50 sm:rounded-[2rem] sm:border sm:border-border/70 sm:bg-background/95 sm:p-6 sm:shadow-[0_32px_80px_rgba(36,35,39,0.24)] sm:backdrop-blur-2xl"
             >
               <div className="flex h-full flex-col">
                 <div className="mb-5 shrink-0">
