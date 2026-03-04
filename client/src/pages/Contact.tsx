@@ -49,7 +49,7 @@ export default function Contact() {
   };
 
   return (
-    <PageTransition className="pt-32 pb-24 bg-background min-h-screen">
+    <PageTransition className="min-h-dvh bg-background pb-24 pt-32">
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         
         <motion.div 

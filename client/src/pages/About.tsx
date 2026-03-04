@@ -24,7 +24,7 @@ export default function About() {
   const principles = content?.principles ?? [];
 
   return (
-    <PageTransition className="min-h-screen bg-background pb-24 pt-32">
+    <PageTransition className="min-h-dvh bg-background pb-24 pt-32">
       <div className="px-4 sm:px-6 lg:px-8">
         <section className="mx-auto max-w-[92rem]">
           <div className="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
