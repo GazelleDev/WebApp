@@ -2,7 +2,7 @@ services:
   - type: web
     name: gazelle-web
     runtime: docker
-    plan: starter
+    plan: free
     region: ohio
     autoDeployTrigger: checksPass
     healthCheckPath: /api/health
