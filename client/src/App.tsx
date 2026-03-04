@@ -2,7 +2,7 @@ import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 import { useEffect } from "react";
 
 // Layout & UI
@@ -18,6 +18,8 @@ import About from "./pages/About";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -32,8 +34,10 @@ function Router() {
   const [location] = useLocation();
   
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence initial={false} mode="wait">
       <Switch location={location} key={location}>
+        <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin" component={AdminDashboard} />
         <Route path="/" component={Home} />
         <Route path="/menu" component={Menu} />
         <Route path="/location" component={Location} />
@@ -48,18 +52,23 @@ function Router() {
 }
 
 function App() {
+  const [location] = useLocation();
+  const isAdminRoute = location.startsWith("/admin");
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="flex flex-col min-h-screen">
-        <ScrollToTop />
-        <Navbar />
-        <main className="flex-1">
-          <Router />
-        </main>
-        <Footer />
-      </div>
-      <Toaster />
-    </QueryClientProvider>
+    <MotionConfig reducedMotion="user">
+      <QueryClientProvider client={queryClient}>
+        <div className="flex flex-col min-h-screen">
+          <ScrollToTop />
+          {!isAdminRoute ? <Navbar /> : null}
+          <main className="flex-1">
+            <Router />
+          </main>
+          {!isAdminRoute ? <Footer /> : null}
+        </div>
+        <Toaster />
+      </QueryClientProvider>
+    </MotionConfig>
   );
 }
 

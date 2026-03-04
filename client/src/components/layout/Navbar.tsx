@@ -3,6 +3,16 @@ import { Link, useLocation } from "wouter";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { usePublicContent } from "@/hooks/use-public-content";
+import {
+  modalBackdropVariant,
+  modalPanelVariant,
+  motionEase,
+  quickTransition,
+  softSpring,
+  tightStaggerContainer,
+  overlayCardVariant,
+} from "@/components/ui/PageTransition";
 
 const links = [
   { href: "/", label: "Home" },
@@ -13,10 +23,13 @@ const links = [
 ];
 
 export function Navbar() {
+  const { data } = usePublicContent();
   const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isOverlay = location === "/" && !isScrolled && !mobileMenuOpen;
+  const storeName = data?.siteSettings.storeName ?? "Gazelle";
+  const statusLabel = data?.siteSettings.navbarStatusLabel ?? "In Development";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,22 +59,25 @@ export function Navbar() {
       <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
         <motion.div
           initial={false}
-          animate={{ scale: isScrolled ? 0.985 : 1 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          animate={{
+            scale: isScrolled ? 0.985 : 1,
+            y: isScrolled ? -2 : 0,
+          }}
+          transition={quickTransition}
           className="mx-auto max-w-7xl"
         >
           <div
             className={cn(
-              "rounded-[1.75rem] border px-4 py-2.5 shadow-[0_18px_60px_rgba(40,26,12,0.16)] backdrop-blur-xl transition-all duration-500 sm:px-5 lg:px-6",
+              "rounded-[1.75rem] border px-4 py-2.5 shadow-[0_18px_60px_rgba(36,35,39,0.16)] backdrop-blur-xl transition-all duration-500 sm:px-5 lg:px-6",
               isOverlay
-                ? "border-white/15 bg-black/20 text-white"
+                ? "border-white/15 bg-[#242327]/22 text-white"
                 : "border-border/70 bg-background/88 text-foreground",
             )}
           >
             <div className="flex items-center justify-between gap-3">
               <Link href="/" className="group flex min-w-0 items-center">
-                <span className="min-w-0 truncate font-brand text-[1.7rem] leading-none text-[#ab7e32]">
-                  Gazelle.
+                <span className="min-w-0 truncate font-brand text-[1.7rem] leading-none text-[#C0987E]">
+                  {storeName}.
                 </span>
               </Link>
 
@@ -69,7 +85,7 @@ export function Navbar() {
                 className={cn(
                   "hidden lg:flex items-center gap-1 rounded-full border p-1",
                   isOverlay
-                    ? "border-white/12 bg-white/5"
+                    ? "border-white/16 bg-[#242327]/42 shadow-[0_12px_30px_rgba(36,35,39,0.18)]"
                     : "border-border/70 bg-card/65",
                 )}
               >
@@ -86,7 +102,7 @@ export function Navbar() {
                         isActive
                           ? "text-foreground"
                           : isOverlay
-                            ? "text-white/72 hover:text-white"
+                            ? "text-[#9F7965] hover:text-[#242327]"
                             : "text-muted-foreground hover:text-foreground",
                       )}
                     >
@@ -97,9 +113,9 @@ export function Navbar() {
                             "absolute inset-0 rounded-full",
                             isOverlay
                               ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
-                              : "bg-background shadow-[inset_0_0_0_1px_rgba(29,26,23,0.05),0_8px_24px_rgba(74,54,27,0.08)]",
+                              : "bg-background shadow-[inset_0_0_0_1px_rgba(36,35,39,0.05),0_8px_24px_rgba(36,35,39,0.08)]",
                           )}
-                          transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                          transition={softSpring}
                         />
                       )}
                       <span className="relative z-10">{link.label}</span>
@@ -113,12 +129,12 @@ export function Navbar() {
                   className={cn(
                     "inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[10px] uppercase tracking-[0.24em]",
                     isOverlay
-                      ? "border-white/15 bg-white/8 text-white/80"
+                      ? "border-[#9F7965]/35 bg-[#f4ece6]/55 text-[#242327]"
                       : "border-border/70 bg-card/75 text-muted-foreground",
                   )}
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  In Development
+                  {statusLabel}
                 </div>
 
                 <Link
@@ -157,23 +173,24 @@ export function Navbar() {
         </motion.div>
       </header>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {mobileMenuOpen && (
           <>
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/35 backdrop-blur-sm"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={modalBackdropVariant}
+              className="fixed inset-0 z-40 bg-[#242327]/35 backdrop-blur-sm"
               onClick={() => setMobileMenuOpen(false)}
             />
             <motion.div
               id="mobile-nav-panel"
-              initial={{ opacity: 0, y: -24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -24 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-4 top-24 z-50 rounded-[2rem] border border-border/70 bg-background/95 p-6 shadow-[0_32px_80px_rgba(36,22,8,0.24)] backdrop-blur-2xl sm:inset-x-6"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={modalPanelVariant}
+              className="fixed inset-x-4 top-24 z-50 rounded-[2rem] border border-border/70 bg-background/95 p-6 shadow-[0_32px_80px_rgba(36,35,39,0.24)] backdrop-blur-2xl sm:inset-x-6"
             >
               <div className="mb-8 flex items-start justify-between gap-4">
                 <div>
@@ -193,40 +210,56 @@ export function Navbar() {
                 </button>
               </div>
 
-              <nav className="flex flex-col gap-2">
+              <motion.nav
+                variants={tightStaggerContainer}
+                initial="hidden"
+                animate="visible"
+                className="flex flex-col gap-2"
+              >
                 {links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "rounded-[1.25rem] border px-5 py-4 transition-colors",
-                      location === link.href
-                        ? "border-accent/30 bg-accent/10 text-foreground"
-                        : "border-border/60 bg-card/50 text-foreground hover:border-accent/30 hover:text-accent",
-                    )}
-                  >
-                    <span className="block text-[10px] uppercase tracking-[0.28em] text-accent/80">
-                      Section
-                    </span>
-                    <span className="mt-2 block text-3xl font-display leading-none">
-                      {link.label}
-                    </span>
-                    <span className="mt-2 block text-sm text-muted-foreground">
-                      {link.href === "/"
-                        ? "Landing page and brand overview."
-                        : link.href === "/menu"
-                          ? "Offerings, categories, and pricing."
-                          : link.href === "/location"
-                            ? "Flagship status and opening context."
-                            : link.href === "/about"
-                              ? "Origins, philosophy, and intent."
-                              : "Interior imagery and atmosphere."}
-                    </span>
-                  </Link>
+                  <motion.div key={link.href} variants={overlayCardVariant}>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "rounded-[1.25rem] border px-5 py-4 transition-colors",
+                        location === link.href
+                          ? "border-accent/30 bg-accent/10 text-foreground"
+                          : "border-border/60 bg-card/50 text-foreground hover:border-accent/30 hover:text-accent",
+                      )}
+                    >
+                      <span className="block text-[10px] uppercase tracking-[0.28em] text-accent/80">
+                        Section
+                      </span>
+                      <span className="mt-2 block text-3xl font-display leading-none">
+                        {link.label}
+                      </span>
+                      <span className="mt-2 block text-sm text-muted-foreground">
+                        {link.href === "/"
+                          ? "Landing page and brand overview."
+                          : link.href === "/menu"
+                            ? "Offerings, categories, and pricing."
+                            : link.href === "/location"
+                              ? "Flagship status and opening context."
+                              : link.href === "/about"
+                                ? "Origins, philosophy, and intent."
+                                : "Interior imagery and atmosphere."}
+                      </span>
+                    </Link>
+                  </motion.div>
                 ))}
-              </nav>
+              </motion.nav>
 
-              <div className="mt-6 rounded-[1.5rem] border border-border/70 bg-card/70 p-5">
+              <motion.div
+                variants={overlayCardVariant}
+                initial="hidden"
+                animate="visible"
+                transition={{
+                  delay: 0.16,
+                  duration: 0.58,
+                  ease: motionEase,
+                }}
+                className="mt-6 rounded-[1.5rem] border border-border/70 bg-card/70 p-5"
+              >
                 <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
                   Currently
                 </p>
@@ -243,7 +276,7 @@ export function Navbar() {
                   Contact Gazelle
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </>
         )}

@@ -1,97 +1,255 @@
-import { PageTransition, fadeUpVariant } from "@/components/ui/PageTransition";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { usePublicContent } from "@/hooks/use-public-content";
+import {
+  PageTransition,
+  createRevealVariant,
+  fadeUpVariant,
+  heroCopyVariant,
+  heroVisualVariant,
+  overlayCardVariant,
+  revealViewport,
+  staggerContainer,
+  tightRevealViewport,
+  tightStaggerContainer,
+} from "@/components/ui/PageTransition";
 import storyImgOne from "@assets/Screenshot_2026-03-02_at_12.08.31_PM_1772562150247.png";
 import storyImgTwo from "@assets/Screenshot_2026-03-02_at_12.09.38_PM_1772562150247.png";
 
 export default function About() {
+  const { data } = usePublicContent();
+  const content = data?.aboutPage;
+  const storyBlocks = content?.storyBlocks ?? [];
+  const principles = content?.principles ?? [];
+
   return (
-    <PageTransition className="pt-32 pb-24 bg-background min-h-screen">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
-        {/* Header */}
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={fadeUpVariant}
-          className="text-center max-w-3xl mx-auto mb-20"
-        >
-          <h1 className="text-5xl md:text-7xl font-display mb-8">The Story</h1>
-          <p className="text-xl text-muted-foreground font-light leading-relaxed">
-            Gazelle was founded on a simple premise: coffee should be an experience, not just a transaction. 
-            We believe in taking the time to do things right.
-          </p>
-        </motion.div>
+    <PageTransition className="min-h-screen bg-background pb-24 pt-32">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-[92rem]">
+          <div className="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={heroCopyVariant}
+              className="relative overflow-hidden rounded-[3rem] border border-border/70 bg-card/82 p-8 shadow-[0_28px_80px_rgba(36,35,39,0.12)] sm:p-10 lg:min-h-[39rem] lg:p-12"
+            >
+              <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-white/45 to-transparent" />
+              <div className="absolute -left-12 top-12 h-48 w-48 rounded-full bg-[#C0987E]/22 blur-3xl" />
+              <div className="absolute bottom-0 right-0 h-56 w-56 rounded-full bg-[#9F7965]/16 blur-3xl" />
 
-        {/* Image Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="rounded-t-full overflow-hidden aspect-[4/5]"
-          >
-            <img 
-              src={storyImgOne}
-              alt="Gazelle interior seating"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="rounded-b-full overflow-hidden aspect-[4/5] md:mt-24"
-          >
-            <img 
-              src={storyImgTwo}
-              alt="Gazelle entrance and architectural arches"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-        </div>
+              <div className="relative flex h-full flex-col justify-between">
+                <div className="max-w-3xl">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/35 bg-white/55 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
+                    {content?.heroEyebrow ?? "Brand Intent"}
+                  </div>
 
-        {/* Values */}
-        <div className="max-w-4xl mx-auto bg-card rounded-3xl p-10 md:p-16 border border-border/50 shadow-sm mb-24">
-          <h2 className="text-3xl font-display text-center mb-12">Our Philosophy</h2>
-          
-          <div className="space-y-12">
-            <div className="flex flex-col md:flex-row gap-6 md:gap-12">
-              <div className="md:w-1/3 text-accent text-lg font-medium">01. Sourcing</div>
-              <div className="md:w-2/3">
-                <h3 className="text-2xl font-display mb-3">Direct & Transparent</h3>
-                <p className="text-muted-foreground font-light leading-relaxed">
-                  We work directly with small-scale farmers in Ethiopia, Colombia, and Japan. Paying above fair-trade prices ensures sustainable practices and exceptional quality year after year.
-                </p>
-              </div>
-            </div>
-            
-            <div className="w-full h-px bg-border/60" />
-            
-            <div className="flex flex-col md:flex-row gap-6 md:gap-12">
-              <div className="md:w-1/3 text-accent text-lg font-medium">02. Roasting</div>
-              <div className="md:w-2/3">
-                <h3 className="text-2xl font-display mb-3">Precision & Care</h3>
-                <p className="text-muted-foreground font-light leading-relaxed">
-                  Our roasting process is tailored to each specific bean lot. We prefer lighter roasts that highlight the natural terroir and fruity notes, avoiding the bitter, burnt flavors of mass-produced coffee.
-                </p>
-              </div>
-            </div>
+                  <h1 className="mt-8 max-w-3xl text-5xl font-display leading-[0.92] text-foreground md:text-7xl lg:text-[5.7rem]">
+                    {content?.heroTitle ?? "A brand being shaped"}
+                    <br />
+                    <span className="italic text-[#9F7965]">{content?.heroAccent ?? "with restraint."}</span>
+                  </h1>
 
-            <div className="w-full h-px bg-border/60" />
-            
-            <div className="flex flex-col md:flex-row gap-6 md:gap-12">
-              <div className="md:w-1/3 text-accent text-lg font-medium">03. Space</div>
-              <div className="md:w-2/3">
-                <h3 className="text-2xl font-display mb-3">A Place to Pause</h3>
-                <p className="text-muted-foreground font-light leading-relaxed">
-                  The environment is just as important as the cup. We've designed Gazelle to be an architectural sanctuary—warm woods, soft acoustics, and no blaring music. It's an analog space in a digital world.
-                </p>
+                  <p className="mt-8 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
+                    {content?.heroBody ?? "Gazelle began as a desire to build a coffee experience that feels warmer, slower, and more architecturally composed than the usual cafe formula."}
+                  </p>
+
+                  <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                    {content?.heroSecondaryBody ?? "This is still a brand in development. What you see here is the philosophy, visual language, and emotional direction that will shape the final physical experience."}
+                  </p>
+
+                  <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                    <Link
+                      href="/gallery"
+                      className="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background transition-colors hover:bg-foreground/90"
+                    >
+                      {content?.primaryCtaLabel ?? "View Atmosphere"}
+                    </Link>
+                    <Link
+                      href="/menu"
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-accent/60 bg-white/45 px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-foreground transition-colors hover:border-[#9F7965] hover:text-[#9F7965]"
+                    >
+                      {content?.secondaryCtaLabel ?? "See Menu Direction"}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+
+                <motion.div
+                  variants={tightStaggerContainer}
+                  initial="hidden"
+                  animate="visible"
+                  className="mt-12 grid gap-3"
+                >
+                  {storyBlocks.map((block) => (
+                    <motion.div
+                      key={block.title}
+                      variants={fadeUpVariant}
+                      className="rounded-[1.6rem] border border-white/55 bg-white/45 px-5 py-5 backdrop-blur-sm"
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
+                        {block.title}
+                      </p>
+                      <p className="mt-3 text-sm leading-relaxed text-foreground/86">
+                        {block.desc}
+                      </p>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={heroVisualVariant}
+              className="grid gap-6 lg:grid-rows-[1.05fr_0.95fr]"
+            >
+              <div className="relative min-h-[22rem] overflow-hidden rounded-[3rem] border border-[#9F7965]/40 bg-[#242327] p-4 shadow-[0_30px_90px_rgba(36,35,39,0.24)] sm:p-5">
+                <img
+                  src={storyImgOne}
+                  alt="Gazelle interior seating preview"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(36,35,39,0.08),rgba(36,35,39,0.26)_44%,rgba(36,35,39,0.72)_100%)]" />
+
+                <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#242327]/28 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-white/78 backdrop-blur-md">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
+                  {content?.spatialEyebrow ?? "Spatial Language"}
+                </div>
+
+                <div className="absolute bottom-5 left-5 right-5 rounded-[2rem] border border-white/10 bg-[#242327]/30 p-6 backdrop-blur-md">
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
+                    {content?.designEyebrow ?? "Design Direction"}
+                  </p>
+                  <p className="mt-3 max-w-lg text-[1.9rem] font-display leading-[1.02] text-white md:text-[2.2rem]">
+                    {content?.designTitle ?? "Gazelle is meant to feel intimate, composed, and quietly cinematic."}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={tightRevealViewport}
+                  variants={overlayCardVariant}
+                  className="relative overflow-hidden rounded-[2.4rem] border border-[#9F7965]/35 bg-[#242327] p-4 shadow-[0_24px_70px_rgba(36,35,39,0.16)]"
+                >
+                  <img
+                    src={storyImgTwo}
+                    alt="Gazelle entry and architectural arches"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(36,35,39,0.18),rgba(36,35,39,0.58)_100%)]" />
+                  <div className="relative flex h-full min-h-[18rem] items-end rounded-[1.8rem] border border-white/10 bg-[#242327]/18 p-5 backdrop-blur-sm">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-white/55">
+                        {content?.entryEyebrow ?? "Entry Mood"}
+                      </p>
+                      <p className="mt-2 text-lg font-display text-white">
+                        {content?.entryTitle ?? "Soft thresholds, arches, and a calmer visual tempo."}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={tightRevealViewport}
+                  variants={createRevealVariant({ distance: 16, delay: 0.1, duration: 0.62, scale: 0.985 })}
+                  className="rounded-[2.4rem] border border-border/70 bg-card/70 p-7 shadow-[0_20px_60px_rgba(36,35,39,0.08)]"
+                >
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
+                    {content?.whyEyebrow ?? "Why It Exists"}
+                  </p>
+                  <h2 className="mt-4 text-[2.35rem] font-display leading-none text-foreground">
+                    {content?.whyTitle ?? "Not louder. More deliberate."}
+                  </h2>
+                  <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+                    {content?.whyBody ?? "Gazelle is being designed for people who want atmosphere, service, and menu choices to feel connected. The identity works only if those parts reinforce one another."}
+                  </p>
+                  <div className="mt-8 rounded-[1.6rem] border border-white/45 bg-white/45 px-5 py-5">
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
+                      {content?.currentStateEyebrow ?? "Current State"}
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-foreground/86">
+                      {content?.currentStateBody ?? "A clear visual and experiential direction is in place. The goal now is refinement, not invention from scratch."}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-        
+        </section>
+
+        <section className="mx-auto mt-24 max-w-[92rem]">
+          <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={revealViewport}
+              variants={fadeUpVariant}
+              className="rounded-[2.75rem] border border-border/70 bg-background/92 p-7 shadow-[0_22px_60px_rgba(36,35,39,0.07)] sm:p-8 lg:p-10"
+            >
+              <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
+                {content?.principlesEyebrow ?? "What Guides It"}
+              </p>
+              <h2 className="mt-5 max-w-md text-4xl font-display leading-tight text-foreground md:text-5xl">
+                {content?.principlesTitle ?? "Three principles shape the whole project."}
+              </h2>
+              <p className="mt-6 max-w-md text-lg font-light leading-relaxed text-muted-foreground">
+                {content?.principlesBody ?? "The visual identity is only useful if it helps define how Gazelle should feel. These principles are the filter for every design decision."}
+              </p>
+              <Link
+                href="/contact"
+                className="mt-10 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-foreground transition-colors hover:text-accent"
+              >
+                {content?.principlesCtaLabel ?? "Talk to Gazelle"}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={tightRevealViewport}
+              className="grid gap-5"
+            >
+              {principles.map((item, index) => (
+                <motion.article
+                  key={item.title}
+                  variants={fadeUpVariant}
+                  className={`rounded-[2.2rem] border p-6 shadow-[0_18px_44px_rgba(36,35,39,0.08)] ${
+                    index === 1
+                      ? "border-[#9F7965]/40 bg-[#242327] text-white"
+                      : "border-border/70 bg-card/65 text-foreground"
+                  }`}
+                >
+                  <div className="grid gap-5 md:grid-cols-[7rem_1fr] md:items-start">
+                    <div>
+                      <p className={`text-[10px] uppercase tracking-[0.32em] ${index === 1 ? "text-[#C0987E]" : "text-[#9F7965]"}`}>
+                        {item.label}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className={`text-[2rem] font-display leading-none ${index === 1 ? "text-white" : "text-foreground"}`}>
+                        {item.title}
+                      </h3>
+                      <p className={`mt-4 max-w-2xl text-sm leading-relaxed md:text-base ${index === 1 ? "text-white/72" : "text-muted-foreground"}`}>
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </motion.div>
+          </div>
+        </section>
       </div>
     </PageTransition>
   );

@@ -1,113 +1,184 @@
-import { PageTransition, fadeUpVariant } from "@/components/ui/PageTransition";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
-import { MapPin, Clock, Mail, ArrowRight } from "lucide-react";
-import previewImg from "@assets/Screenshot_2026-03-02_at_12.09.38_PM_1772562150247.png";
+import { Clock3, Mail, MapPin, Navigation, Phone } from "lucide-react";
+import { usePublicContent } from "@/hooks/use-public-content";
+import {
+  PageTransition,
+  fadeUpVariant,
+  heroCopyVariant,
+  heroVisualVariant,
+} from "@/components/ui/PageTransition";
 
 export default function Location() {
+  const { data } = usePublicContent();
+  const content = data?.locationPage;
+  const siteSettings = data?.siteSettings;
+  const addressLines = siteSettings?.addressLines ?? ["1240 Heritage Avenue", "Suite 101", "Metropolis, NY 10012"];
+  const parkingNotes = siteSettings?.parkingNotes ?? [
+    "Street parking available on Heritage Ave.",
+    "Complimentary 1-hour parking in the rear lot for guests.",
+  ];
+  const hours = siteSettings?.hours ?? [
+    { days: "Monday - Friday", time: "7:00 AM - 6:00 PM" },
+    { days: "Saturday", time: "8:00 AM - 6:00 PM" },
+    { days: "Sunday", time: "8:00 AM - 4:00 PM" },
+  ];
+  const phoneNumber = siteSettings?.phone ?? "(555) 123-4567";
+  const emailAddress = siteSettings?.generalEmail ?? "hello@gazellecoffee.com";
+  const mapQuery = encodeURIComponent(siteSettings?.locationMapQuery ?? addressLines.join(", "));
+  const mapHref = `https://maps.google.com/?q=${mapQuery}`;
+  const mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
+
   return (
-    <PageTransition className="pt-32 pb-24 bg-background min-h-screen">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={fadeUpVariant}
-          className="text-center mb-16"
-        >
-          <h1 className="text-5xl md:text-7xl font-display mb-6">Location Preview</h1>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto font-light">
-            The Gazelle flagship is still in development. This page shares what is confirmed now without presenting placeholder operational details as if they were live.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Info Panel */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="lg:col-span-5 bg-card p-8 md:p-12 rounded-3xl border border-border/50 shadow-sm"
+    <PageTransition className="min-h-screen bg-background pb-24 pt-32">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-[92rem]">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeUpVariant}
+            className="mx-auto mb-12 max-w-3xl text-center"
           >
-            <div className="space-y-10">
-              <div>
-                <h3 className="flex items-center gap-3 text-sm tracking-widest uppercase text-accent mb-4">
-                  <MapPin className="w-4 h-4" /> Location
-                </h3>
-                <p className="text-xl text-foreground font-display mb-1">Flagship details coming soon</p>
-                <p className="text-muted-foreground">
-                  We&apos;re finalizing the first public Gazelle location.
-                  <br />
-                  Address, neighborhood, and opening date will be announced once confirmed.
-                </p>
-                <p className="mt-4 text-sm text-muted-foreground bg-background/50 p-3 rounded-lg border border-border/30">
-                  <span className="font-medium text-foreground block mb-1">Current Status:</span>
-                  The imagery on this site reflects the intended design direction for Gazelle&apos;s physical space, not a currently open storefront.
-                </p>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#9F7965]/28 bg-white/45 px-3.5 py-2 text-[10px] uppercase tracking-[0.24em] text-[#9F7965]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
+              {content?.heroEyebrow ?? "Visit Gazelle"}
+            </div>
+            <h1 className="mt-7 text-5xl font-display leading-[0.94] text-foreground md:text-7xl">
+              {content?.heroTitle ?? "Location details"}
+              <br />
+              <span className="italic text-[#9F7965]">{content?.heroAccent ?? "for layout review."}</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
+              {content?.heroBody ?? "The page below uses placeholder address and service information so the location experience can be designed with complete content."}
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={heroCopyVariant}
+              className="rounded-[3rem] border border-[#9F7965]/28 bg-card/78 p-8 shadow-[0_28px_80px_rgba(36,35,39,0.10)] sm:p-10"
+            >
+              <div className="flex flex-col gap-11">
+                <section>
+                  <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
+                    <MapPin className="h-5 w-5" />
+                    <span>{content?.locationLabel ?? "Location"}</span>
+                  </div>
+
+                  <div className="mt-8 space-y-2">
+                    <p className="text-[2.2rem] font-medium leading-tight text-foreground">
+                      {addressLines[0]}
+                    </p>
+                    <p className="text-[2rem] leading-tight text-[#7f6a5e]">
+                      {addressLines[1]}
+                    </p>
+                    <p className="text-[2rem] leading-tight text-[#7f6a5e]">
+                      {addressLines[2]}
+                    </p>
+                  </div>
+
+                  <div className="mt-8 rounded-[1.7rem] border border-white/45 bg-white/42 p-5">
+                    <p className="text-[1.05rem] font-semibold text-foreground">
+                      {content?.parkingLabel ?? "Parking Notes"}:
+                    </p>
+                    <div className="mt-3 space-y-1 text-[1.05rem] leading-relaxed text-muted-foreground">
+                      {parkingNotes.map((note) => (
+                        <p key={note}>{note}</p>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <div className="h-px bg-border/60" />
+
+                <section>
+                  <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
+                    <Clock3 className="h-5 w-5" />
+                    <span>{content?.hoursLabel ?? "Hours"}</span>
+                  </div>
+
+                  <div className="mt-8 space-y-6">
+                    {hours.map((entry) => (
+                      <div key={entry.days} className="flex items-baseline justify-between gap-6">
+                        <span className="text-[1.1rem] font-medium text-foreground md:text-[1.25rem]">
+                          {entry.days}
+                        </span>
+                        <span className="text-right text-[1.1rem] text-[#7f6a5e] md:text-[1.25rem]">
+                          {entry.time}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <div className="h-px bg-border/60" />
+
+                <section>
+                  <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-[#C0987E]">
+                    <Phone className="h-5 w-5" />
+                    <span>{content?.contactLabel ?? "Contact"}</span>
+                  </div>
+
+                  <div className="mt-8 space-y-5">
+                    <a
+                      href={`tel:${phoneNumber.replace(/[^\d+]/g, "")}`}
+                      className="flex items-center gap-4 text-[1.1rem] text-foreground transition-colors hover:text-[#9F7965] md:text-[1.2rem]"
+                    >
+                      <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#9F7965]/20 bg-white/35 text-[#C0987E]">
+                        <Phone className="h-5 w-5" />
+                      </span>
+                      <span>{phoneNumber}</span>
+                    </a>
+
+                    <a
+                      href={`mailto:${emailAddress}`}
+                      className="flex items-center gap-4 text-[1.1rem] text-foreground transition-colors hover:text-[#9F7965] md:text-[1.2rem]"
+                    >
+                      <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#9F7965]/20 bg-white/35 text-[#C0987E]">
+                        <Mail className="h-5 w-5" />
+                      </span>
+                      <span>{emailAddress}</span>
+                    </a>
+                  </div>
+                </section>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={heroVisualVariant}
+              className="relative min-h-[42rem] overflow-hidden rounded-[3rem] border border-[#9F7965]/28 bg-[#d8d0c8] shadow-[0_30px_90px_rgba(36,35,39,0.14)]"
+            >
+              <iframe
+                title="Gazelle placeholder map"
+                src={mapEmbedUrl}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full"
+              />
+
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(244,236,230,0.18),transparent_28%),linear-gradient(180deg,rgba(36,35,39,0.02),rgba(36,35,39,0.16))]" />
+
+              <div className="absolute right-6 top-6 inline-flex items-center gap-2 rounded-full border border-[#242327]/12 bg-[#242327] px-4 py-2 text-[10px] uppercase tracking-[0.24em] text-[#f4ece6] shadow-[0_12px_28px_rgba(36,35,39,0.22)] backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C0987E]" />
+                {content?.mapPreviewLabel ?? "Map Preview"}
               </div>
 
-              <div className="h-px bg-border/60" />
-
-              <div>
-                <h3 className="flex items-center gap-3 text-sm tracking-widest uppercase text-accent mb-4">
-                  <Clock className="w-4 h-4" /> Hours
-                </h3>
-                <ul className="space-y-3">
-                  <li className="flex justify-between items-center text-foreground">
-                    <span className="font-medium">Public Opening</span>
-                    <span className="text-muted-foreground">To be announced</span>
-                  </li>
-                  <li className="flex justify-between items-center text-foreground">
-                    <span className="font-medium">Preview Events</span>
-                    <span className="text-muted-foreground">Shared by newsletter</span>
-                  </li>
-                  <li className="flex justify-between items-center text-foreground">
-                    <span className="font-medium">Service Hours</span>
-                    <span className="text-muted-foreground">Published with launch</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="h-px bg-border/60" />
-
-              <div>
-                <h3 className="flex items-center gap-3 text-sm tracking-widest uppercase text-accent mb-4">
-                  <Mail className="w-4 h-4" /> Contact
-                </h3>
-                <p className="text-foreground mb-2">hello@gazellecoffee.com</p>
-                <p className="text-muted-foreground">
-                  Use the contact form for private events, creative partnerships, or launch questions.
-                </p>
-                <Link
-                  href="/contact"
-                  className="mt-5 inline-flex items-center gap-2 text-foreground font-medium transition-colors hover:text-accent"
+              <div className="absolute inset-x-6 bottom-8 flex justify-center">
+                <a
+                  href={mapHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-3 rounded-full border border-[#242327]/12 bg-[#242327] px-8 py-4 text-sm uppercase tracking-[0.18em] text-[#f4ece6] shadow-[0_14px_32px_rgba(36,35,39,0.22)] backdrop-blur-sm transition-colors hover:border-[#C0987E] hover:text-[#C0987E]"
                 >
-                  Contact Gazelle
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+                  <Navigation className="h-5 w-5 text-[#C0987E]" />
+                  {content?.mapButtonLabel ?? "Open in Maps"}
+                </a>
               </div>
-            </div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="lg:col-span-7 h-[500px] lg:h-full min-h-[500px] rounded-3xl overflow-hidden shadow-sm border border-border/50 relative group"
-          >
-            <img 
-              src={previewImg}
-              alt="Gazelle flagship interior preview"
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500 flex items-center justify-center">
-               <div className="bg-background/90 backdrop-blur px-6 py-3 rounded-full border border-border flex items-center gap-3 shadow-lg">
-                 <MapPin className="w-5 h-5 text-accent" />
-                 <span className="font-medium tracking-wide uppercase text-sm">Flagship Preview</span>
-               </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
+        </section>
       </div>
     </PageTransition>
   );

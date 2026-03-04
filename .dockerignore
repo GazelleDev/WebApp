@@ -1,0 +1,11 @@
+.git
+.github
+node_modules
+dist
+.env
+.env.*
+.local
+.agents
+.DS_Store
+*.log
+attached_assets/*.pdf

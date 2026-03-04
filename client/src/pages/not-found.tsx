@@ -1,10 +1,17 @@
 import { Link } from "wouter";
 import { AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { PageTransition, fadeUpVariant } from "@/components/ui/PageTransition";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-background px-6 pt-32 pb-24">
-      <div className="mx-auto flex max-w-2xl flex-col items-start gap-8 rounded-[2rem] border border-border/70 bg-card p-10 shadow-sm">
+    <PageTransition className="min-h-screen bg-background px-6 pb-24 pt-32">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeUpVariant}
+        className="mx-auto flex max-w-2xl flex-col items-start gap-8 rounded-[2rem] border border-border/70 bg-card p-10 shadow-sm"
+      >
         <div className="flex items-center gap-3 text-accent">
           <AlertCircle className="h-7 w-7" />
           <span className="text-sm tracking-[0.24em] uppercase">Page Not Found</span>
@@ -21,7 +28,7 @@ export default function NotFound() {
         >
           Return Home
         </Link>
-      </div>
-    </div>
+      </motion.div>
+    </PageTransition>
   );
 }

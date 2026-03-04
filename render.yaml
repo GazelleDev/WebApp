@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: gazelle-web
+    runtime: docker
+    plan: starter
+    region: ohio
+    autoDeployTrigger: checksPass
+    healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 120
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gazelle-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+
+databases:
+  - name: gazelle-db
+    plan: basic-256mb
+    region: ohio
