@@ -6,7 +6,6 @@ services:
     region: ohio
     autoDeployTrigger: checksPass
     healthCheckPath: /api/health
-    maxShutdownDelaySeconds: 120
     envVars:
       - key: PORT
         value: 10000
@@ -23,5 +22,5 @@ services:
 
 databases:
   - name: gazelle-db
-    plan: basic-256mb
+    plan: free
     region: ohio

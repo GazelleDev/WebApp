@@ -69,10 +69,16 @@ It provisions:
 Default Render behavior in this setup:
 
 - region: `ohio`
-- web plan: `starter`
-- database plan: `basic-256mb`
+- web plan: `free`
+- database plan: `free`
 - health check path: `/api/health`
 - deploys only after GitHub checks pass
+
+Free-tier caveats:
+
+- the web service can spin down when idle
+- the free Postgres instance is not suitable for a serious production launch
+- free-tier limits and availability can change, so treat this as a demo or staging setup
 
 Values still requiring manual entry in Render:
 
