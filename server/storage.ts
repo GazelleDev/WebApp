@@ -1,4 +1,4 @@
-import { and, asc, eq, lt } from "drizzle-orm";
+import { asc, eq, lt } from "drizzle-orm";
 import { db } from "./db";
 import {
   adminSessions,
@@ -16,7 +16,6 @@ import {
   type NewsletterSubscriber,
 } from "@shared/schema";
 import {
-  adminMenuDocumentSchema,
   buildDefaultPublicContentBootstrap,
   contentDocumentKeySchema,
   contentDocumentSchemas,

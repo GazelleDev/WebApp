@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { useLocation } from "wouter";
 import type {
-  AdminMenuDocument,
   ContentDocumentKey,
   ContentDocumentRecord,
   ContentDocumentPayloadMap,
@@ -28,7 +27,6 @@ import {
   AdminStatusPill,
   AdminSubCard,
   AdminTextarea,
-  AdminToggle,
 } from "@/components/admin/fields";
 import { MenuEditor } from "@/components/admin/menu-editor";
 

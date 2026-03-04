@@ -8,7 +8,6 @@ import { pool } from "./db";
 const app = express();
 const httpServer = createServer(app);
 let isShuttingDown = false;
-const closeDatabasePool = pool as { end?: () => Promise<void> } | null;
 
 declare module "http" {
   interface IncomingMessage {
@@ -52,7 +51,7 @@ async function shutdown(signal: string) {
     }
 
     try {
-      await closeDatabasePool?.end?.();
+      await pool?.end();
       process.exit(0);
     } catch (dbError) {
       console.error("Database shutdown error:", dbError);

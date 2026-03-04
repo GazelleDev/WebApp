@@ -8,10 +8,8 @@ const allowlist = [
   "drizzle-orm",
   "drizzle-zod",
   "express",
-  "nanoid",
   "pg",
   "zod",
-  "zod-validation-error",
 ];
 
 async function buildAll() {

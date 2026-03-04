@@ -11,7 +11,6 @@ import {
   heroVisualVariant,
   modalBackdropVariant,
   modalPanelVariant,
-  overlayCardVariant,
   revealViewport,
   staggerContainer,
   tightRevealViewport,
